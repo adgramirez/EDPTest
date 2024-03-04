@@ -1,4 +1,20 @@
-function EmployeeTable() {
+import PropTypes from 'prop-types';
+import DefaultButton from './UI/DefaultButton';
+function EmployeeTable({employees, setEmployees, addEmployeeVisibility, setAddEmployeeVisibility, editEmployeeVisibility, setEditEmployeeVisibility}) {
+    const handleAdd = (e, field) => {
+        setAddEmployeeVisibility(true)
+    };
+
+    const handleDelete = (index) => {
+        const updatedEmployees = [...employees];
+        updatedEmployees.splice(index, 1);
+        setEmployees(updatedEmployees);
+    };
+
+    const employeeType = ["Regular", "Part-time", "Probation"];
+    const designationName = ["Manager", "Asst. Manager", "Staff"];
+    const departmentName = ["Administration", "HR", "Marketing", "Accounting", "IT"];
+
     return (
         <div>
             <table className="border-black border border-solid border-collapse">
@@ -10,7 +26,6 @@ function EmployeeTable() {
                         <th className="border-black border border-solid border-collapse">Address</th>
                         <th className="border-black border border-solid border-collapse">Designation</th>
                         <th className="border-black border border-solid border-collapse">Employee Type</th>
-                        <th className="border-black border border-solid border-collapse">Status</th>
                         <th className="border-black border border-solid border-collapse">Department</th>
                         <th className="border-black border border-solid border-collapse">Actions</th>
                     </tr>
@@ -19,18 +34,16 @@ function EmployeeTable() {
                     {employees.length > 0 ? (
                         employees.map((employee, index) => (
                             <tr key={index}>
-                                <td>{employee.employeeNo}</td>
-                                <td>{employee.name}</td>
-                                <td>{employee.contact}</td>
-                                <td>{employee.address}</td>
-                                <td>{employee.designation}</td>
-                                <td>{employee.employeeType}</td>
-                                <td>{employee.status}</td>
-                                <td>{employee.department}</td>
-                                {/* edit edit button functionality */}
+                                <td>{employee.employeeNumber}</td>
+                                <td>{employee.firstName + " " + employee.middleName + " " + employee.lastName}</td>
+                                <td>{employee.contactInformation}</td>
+                                <td>{employee.houseNumber + ', ' + employee.street  + ', ' + employee.barangay + ', ' + employee.city + ', ' + employee.province + ', ' + employee.country + ', ' + employee.zipcode}</td>
+                                <td>{designationName[parseInt(employee.designationName) - 1]}</td>
+                                <td>{employeeType[parseInt(employee.employeeType) - 1]}</td>
+                                <td>{departmentName[parseInt(employee.departmentName) - 1]}</td>
                                 <td>
                                     <div className='edit-delete-buttons'>
-                                        <button className='edit-button'>Edit Details</button>
+                                        <button className='edit-button' onClick={() => setEditEmployeeVisibility({visibility: true, index: index})}>Edit Details</button>
                                         <button className='delete-button' onClick={() => handleDelete(index)}>Remove Employee</button>
                                     </div>
                                 </td>

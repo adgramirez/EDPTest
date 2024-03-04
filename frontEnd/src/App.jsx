@@ -2,27 +2,42 @@
 import { useEffect, useState} from 'react'
 import EmployeeTable from './components/EmployeeTable.jsx';
 import AddEmployee from './components/AddEmployee.jsx';
+import EditEmployee from './components/EditEmployee.jsx';
 
 function App() {
   //source should be database
   const [employees, setEmployees] = useState([{
-    employeeNo: '320',
-    name: 'jkrl',
-    contact: '0922',
-    address: 'mandug',
-    designation: 'mngr',
-    employeeType: 'regular',
-    status: 'active',
-    department: 'hr',
+    employeeNumber: '320',
+    firstName: 'j',
+    middleName: 'k',
+    lastName: 'rl',
+    contactInformation: '0922',
+    houseNumber: '318',
+    street: 'aguila',
+    barangay: 'mandug',
+    city: 'davao city',
+    province: 'davao del sur',
+    country: 'philippines',
+    zipcode: '8000',
+    designationName: 1,
+    employeeType: 2,
+    departmentName: 4,
   }, {
-    employeeNo: '320',
-    name: 'adgr',
-    contact: '0928',
-    address: 'quirino',
-    designation: 'asst mngr',
-    employeeType: 'part-time',
-    status: 'active',
-    department: 'it',
+    employeeNumber: '320',
+    firstName: 'a',
+    middleName: 'd',
+    lastName: 'gr',
+    contactInformation: '0928',
+    houseNumber: '318',
+    street: 'quirino',
+    barangay: 'idk',
+    city: 'davao city',
+    province: 'davao del sur',
+    country: 'philippines',
+    zipcode: '8000',
+    designationName: 3,
+    employeeType: 1,
+    departmentName: 2,
   }]);
 
   const [data, setData] = useState([])
@@ -34,6 +49,10 @@ function App() {
   }, [])
 
   const [addEmployeeVisibility, setAddEmployeeVisibility] = useState(false);
+  const [editEmployeeVisibility, setEditEmployeeVisibility] = useState({
+    visibility: false,
+    index: -1
+  });
 
   return(
     <>
@@ -57,10 +76,11 @@ function App() {
       </div>
       <div className='default-container'>
         <div className='table-button-container'>
-          <EmployeeTable employees={employees} setEmployees={setEmployees} addEmployeeVisibility={addEmployeeVisibility} setAddEmployeeVisibility={setAddEmployeeVisibility}/>
+          <EmployeeTable employees={employees} setEmployees={setEmployees} addEmployeeVisibility={addEmployeeVisibility} setAddEmployeeVisibility={setAddEmployeeVisibility} editEmployeeVisibility={editEmployeeVisibility} setEditEmployeeVisibility={setEditEmployeeVisibility}/>
         </div>
         <div className='default-container'>
-          {addEmployeeVisibility && <AddEmployee setAddEmployeeVisibility={setAddEmployeeVisibility}></AddEmployee>}
+          {addEmployeeVisibility && <AddEmployee setAddEmployeeVisibility={setAddEmployeeVisibility} setEmployees={setEmployees}></AddEmployee>}
+          {editEmployeeVisibility.visibility && <EditEmployee editEmployeeVisibility={editEmployeeVisibility} setEditEmployeeVisibility={setEditEmployeeVisibility} setEmployees={setEmployees} employees={employees}></EditEmployee>}
         </div>
       </div>
       
