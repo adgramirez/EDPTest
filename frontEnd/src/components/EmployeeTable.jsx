@@ -11,7 +11,7 @@ function EmployeeTable({employees, setEmployees, addEmployeeVisibility, setAddEm
         setEmployees(updatedEmployees);
     };
 
-    const employeeType = ["Regular", "Part-time", "Probation"];
+    const employeeType = ["Regular", "Part-time", "Probation", "D"];
     const designationName = ["Manager", "Asst. Manager", "Staff"];
     const departmentName = ["Administration", "HR", "Marketing", "Accounting", "IT"];
 
@@ -37,10 +37,10 @@ function EmployeeTable({employees, setEmployees, addEmployeeVisibility, setAddEm
                                 <td>{employee.employeeNumber}</td>
                                 <td>{employee.firstName + " " + employee.middleName + " " + employee.lastName}</td>
                                 <td>{employee.contactInformation}</td>
-                                <td>{employee.houseNumber + ', ' + employee.street  + ', ' + employee.barangay + ', ' + employee.city + ', ' + employee.province + ', ' + employee.country + ', ' + employee.zipcode}</td>
-                                <td>{designationName[parseInt(employee.designationName) - 1]}</td>
-                                <td>{employeeType[parseInt(employee.employeeType) - 1]}</td>
-                                <td>{departmentName[parseInt(employee.departmentName) - 1]}</td>
+                                <td>{employee.HouseNumber + ', ' + employee.Street  + ', ' + employee.Barangay + ', ' + employee.City + ', ' + employee.Province + ', ' + employee.Country + ', ' + employee.ZIPcode}</td>
+                                <td>{employee.designationName}</td>
+                                <td>{employee.employeeType}</td>
+                                <td>{employee.departmentName}</td>
                                 <td>
                                     <div className='edit-delete-buttons'>
                                         <button className='edit-button' onClick={() => setEditEmployeeVisibility({visibility: true, index: index})}>Edit Details</button>
@@ -68,10 +68,16 @@ function EmployeeTable({employees, setEmployees, addEmployeeVisibility, setAddEm
 EmployeeTable.propTypes = {
     employees: PropTypes.arrayOf(
         PropTypes.shape({
-            employeeNo: PropTypes.string.isRequired,
+            employeeNumber:PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
             name: PropTypes.string.isRequired,
             contact: PropTypes.string.isRequired,
-            address: PropTypes.string.isRequired,
+            houseNumber: PropTypes.string.isRequired,
+            street: PropTypes.string.isRequired,
+            barangay: PropTypes.string.isRequired,
+            city: PropTypes.string.isRequired,
+            province: PropTypes.string.isRequired,
+            country: PropTypes.string.isRequired,
+            zipcode: PropTypes.string.isRequired,
             designation: PropTypes.string.isRequired,
             employeeType: PropTypes.string.isRequired,
             status: PropTypes.string.isRequired,

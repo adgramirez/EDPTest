@@ -28,6 +28,7 @@ function WorkInput({ onTypeChange, onDesignationChange, onDepartmentChange }) {
                     <option value="1">Regular</option>
                     <option value="2">Part Time</option>
                     <option value="3">Probation</option>
+                    <option value="4">D</option>
                 </select>
             </div>
             <div>

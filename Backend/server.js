@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
 // Update the /employee endpoint
 app.get('/employee', (req, res) => {
     const sql = `
-        SELECT employee.*, address.*, designation.*, department.*
+        SELECT employee.*, address.*, designation.*, assignment_designation.employeeType, department.*
         FROM assignment_designation
         JOIN employee ON assignment_designation.employee_id = employee.employee_id
         JOIN address ON employee.address_id = address.address_id
@@ -30,6 +30,7 @@ app.get('/employee', (req, res) => {
     `;
     db.query(sql, (err, data) => {
         if (err) return res.status(500).json({ error: "Internal Server Error" });
+        console.log(data); // Log the entire response data
         return res.json(data);
     });
 });
