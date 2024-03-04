@@ -56,24 +56,6 @@ function App() {
 
   return(
     <>
-      <div style = {{padding: "100px"}}>
-        <table>
-          <thead>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Status</th>
-          </thead>
-          <tbody>
-            {data.map((d, i) => (
-              <tr key ={i}>
-                <td>{d.department_ID}</td>
-                <td>{d.departmentName}</td>
-                <td>{d.status}</td>
-              </tr>
-            ) )}
-          </tbody>
-        </table>
-      </div>
       <div className='default-container'>
         <div className='table-button-container'>
           <EmployeeTable employees={employees} setEmployees={setEmployees} addEmployeeVisibility={addEmployeeVisibility} setAddEmployeeVisibility={setAddEmployeeVisibility} editEmployeeVisibility={editEmployeeVisibility} setEditEmployeeVisibility={setEditEmployeeVisibility}/>
