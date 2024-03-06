@@ -25,30 +25,30 @@ function WorkInput({ onTypeChange, onDesignationChange, onDepartmentChange }) {
                 <p>(Employee Type)</p>
                 <select id="employeeType" onChange={handleSelectChange}>
                     <option value="0">Choose</option>
-                    <option value="1">Regular</option>
-                    <option value="2">Part Time</option>
-                    <option value="3">Probation</option>
-                    <option value="4">D</option>
+                    <option value="Regular">Regular</option>
+                    <option value="Part Time">Part Time</option>
+                    <option value="Probation">Probation</option>
+                    <option value="Dismissed">Dismissed</option>
                 </select>
             </div>
             <div>
                 <p>(Designation)</p>
                 <select id="designationName" onChange={handleSelectChange}>
                     <option value="0">Choose</option>
-                    <option value="1">Manager</option>
-                    <option value="2">Asst. Manager</option>
-                    <option value="3">Staff</option>
+                    <option value="Manager">Manager</option>
+                    <option value="Asst. Manager">Asst. Manager</option>
+                    <option value="Staff">Staff</option>
                 </select>
             </div>
             <div>
                 <p>(Department)</p>
                 <select id="departmentName" onChange={handleSelectChange}>
                     <option value="0">Choose</option>
-                    <option value="1">Administration</option>
-                    <option value="2">HR</option>
-                    <option value="3">Marketing</option>
-                    <option value="4">Accounting</option>
-                    <option value="5">IT</option>
+                    <option value="Administration">Administration</option>
+                    <option value="Human Resource">Human Resource</option>
+                    <option value="Marketing">Marketing</option>
+                    <option value="Accounting">Accounting</option>
+                    <option value="Information Technology">Information Technology</option>
                 </select>
             </div>
         </div>
