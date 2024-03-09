@@ -2,7 +2,7 @@ import { useState} from 'react'
 import EditInputBox from "./UI/EditInputBox"
 
 
-function AddressInput({ onAddressChange, employee }) {
+function EditAddressInput({ onAddressChange, employee }) {
     const handleInputChange = (e, field) => {
         const value = e.target.value;
         onAddressChange(prevAddress => ({
@@ -46,4 +46,4 @@ function AddressInput({ onAddressChange, employee }) {
     )
 }
 
-export default AddressInput
+export default EditAddressInput

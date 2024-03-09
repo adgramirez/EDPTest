@@ -47,42 +47,6 @@ app.get('/employee', (req, res) => {
     });
 });
 
-// Endpoint for departments
-app.get('/department', (req, res) => {
-    const sql = "SELECT * FROM department";
-    db.query(sql, (err, data) => {
-        if (err) return res.status(500).json({ error: "Internal Server Error" });
-        return res.json(data);
-    });
-});
-
-// Endpoint for designations
-app.get('/designation', (req, res) => {
-    const sql = "SELECT * FROM designation";
-    db.query(sql, (err, data) => {
-        if (err) return res.status(500).json({ error: "Internal Server Error" });
-        return res.json(data);
-    });
-});
-
-// Endpoint for addresses
-app.get('/address', (req, res) => {
-    const sql = "SELECT * FROM address";
-    db.query(sql, (err, data) => {
-        if (err) return res.status(500).json({ error: "Internal Server Error" });
-        return res.json(data);
-    });
-});
-
-// Endpoint for assignment_designation
-app.get('/assignment_designation', (req, res) => {
-    const sql = "SELECT * FROM assignment_designation";
-    db.query(sql, (err, data) => {
-        if (err) return res.status(500).json({ error: "Internal Server Error" });
-        return res.json(data);
-    });
-});
-
 app.post('/addEmployee', (req, res) => {
   const employeeData = req.body;
   console.log("Received employee data:", employeeData);
@@ -130,9 +94,6 @@ app.post('/addEmployee', (req, res) => {
           designationName: employeeData.designationName,
           department_ID: department_id, // Always use the newly created ID
         };
-
-
-
 
     console.log("Processed designation data:", designation);
 
@@ -208,6 +169,218 @@ app.post('/addEmployee', (req, res) => {
     });
 });
 
+app.put('/editEmployee/:id', (req, res) => {
+  const employeeId = req.params.id;
+  const employeeData = req.body;
+
+  // Fetch current designation and department names from the database
+  db.query(`
+      SELECT a.address_ID, employeeType, d.designationName, dept.departmentName
+      FROM assignment_designation ad
+      JOIN employee e ON ad.employee_ID = e.employee_ID
+      JOIN address a ON e.address_ID = a.address_ID
+      JOIN designation d ON ad.designation_ID = d.designation_ID
+      JOIN department dept ON d.department_ID = dept.department_ID
+      WHERE ad.employee_ID = ?;
+  `, [employeeId], (err, results) => {
+
+    
+    if (err) {
+      console.error("Error fetching current employee details:", err);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+
+    if (results.length === 0) {
+      console.error("No current employee details found for employee ID:", employeeId);
+      return res.status(404).json({ error: "Employee not found" });
+    }
+
+    const currentEmployeeDetails = results[0];
+    console.log("Current address_ID: ", currentEmployeeDetails.address_ID);
+
+    console.log("Current Employee Details:", currentEmployeeDetails);
+
+    // Extract designationName, departmentName, and employeeType from the fetched data
+    const currentDesignationName = currentEmployeeDetails.designationName;
+    const currentDepartmentName = currentEmployeeDetails.departmentName;
+    const currentEmployeeType = currentEmployeeDetails.employeeType;
+
+    // Compare with the new values from employeeData
+    const isDesignationChanged = employeeData.designationName !== currentDesignationName;
+    const isDepartmentChanged = employeeData.departmentName !== currentDepartmentName;
+    const isEmployeeTypeChanged = employeeData.employeeType !== currentEmployeeType;
+
+    console.log("isDesignationChanged: ", isDesignationChanged);
+    console.log("isDepartmentChanged: ", isDepartmentChanged);
+    console.log("isEmployeeTypeChanged: ", isEmployeeTypeChanged);
+
+    // Update employee table
+    const updateEmployeeSql = `
+      UPDATE employee
+      SET employeeNumber = ?,
+         firstName = ?,
+         middleName = ?,
+         lastName = ?,
+         contactInformation = ?,
+         address_ID = ?
+      WHERE employee_ID = ?
+    `;
+
+    db.query(updateEmployeeSql, [
+      employeeData.employeeNumber,
+      employeeData.firstName,
+      employeeData.middleName,
+      employeeData.lastName,
+      employeeData.contactInformation,
+      currentEmployeeDetails.address_ID,
+      employeeId
+    ], (err) => {
+      if (err) {
+        console.error("Error updating employee:", err);
+        return res.status(500).json({ error: "Internal Server Error" });
+      }
+
+      // Update address table
+      const updateAddressSql = `
+        UPDATE address
+        SET HouseNumber = ?,
+            Street = ?,
+            Barangay = ?,
+            City = ?,
+            Province = ?,
+            Country = ?,
+            ZIPcode = ?
+        WHERE address_ID = ?
+      `;
+
+      db.query(updateAddressSql, [
+        employeeData.HouseNumber,
+        employeeData.Street,
+        employeeData.Barangay,
+        employeeData.City,
+        employeeData.Province,
+        employeeData.Country,
+        employeeData.ZIPcode,
+        currentEmployeeDetails.address_ID
+      ], (err) => {
+        if (err) {
+          console.error("Error updating address:", err);
+          return res.status(500).json({ error: "Internal Server Error" });
+        }
+
+        console.log("Address updated successfully:", employeeData);
+        
+        // Now you can proceed with updating other tables (designation, department, etc.) if needed
+
+        // Update designation and department tables if necessary
+        if (isDesignationChanged) {
+          // Fetch the designation ID based on the employee ID
+          db.query(`
+            SELECT designation_ID
+            FROM assignment_designation
+            WHERE employee_ID = ?;
+          `, [employeeId], (err, results) => {
+              if (err) {
+                  console.error("Error fetching designation ID:", err);
+                  return res.status(500).json({ error: "Internal Server Error" });
+              }
+      
+              if (results.length === 0) {
+                  console.error("No designation found for employee ID:", employeeId);
+                  return res.status(404).json({ error: "Designation not found" });
+              }
+      
+              const designationId = results[0].designation_ID;
+      
+              // Update designation table
+              const updateDesignationSql = `
+                UPDATE designation
+                SET designationName = ?
+                WHERE designation_ID = ?
+              `;
+      
+              db.query(updateDesignationSql, [
+                  employeeData.designationName,
+                  designationId
+              ], (err) => {
+                  if (err) {
+                      console.error("Error updating designation:", err);
+                      return res.status(500).json({ error: "Internal Server Error" });
+                  }
+      
+                  console.log("Designation updated successfully:", employeeData.designationName);
+              });
+          });
+        }
+
+        if (isDepartmentChanged) {
+          // Fetch the department ID based on the designation ID
+          db.query(`
+            SELECT department_ID
+            FROM designation
+            WHERE designation_ID = (
+                SELECT designation_ID
+                FROM assignment_designation
+                WHERE employee_ID = ?
+            );
+          `, [employeeId], (err, results) => {
+              if (err) {
+                  console.error("Error fetching department ID:", err);
+                  return res.status(500).json({ error: "Internal Server Error" });
+              }
+      
+              if (results.length === 0) {
+                  console.error("No department found for employee ID:", employeeId);
+                  return res.status(404).json({ error: "Department not found" });
+              }
+      
+              const departmentId = results[0].department_ID;
+      
+              // Update department table
+              const updateDepartmentSql = `
+                UPDATE department
+                SET departmentName = ?
+                WHERE department_ID = ?
+              `;
+      
+              db.query(updateDepartmentSql, [
+                  employeeData.departmentName,
+                  departmentId
+              ], (err) => {
+                  if (err) {
+                      console.error("Error updating department:", err);
+                      return res.status(500).json({ error: "Internal Server Error" });
+                  }
+      
+                  console.log("Department updated successfully:", employeeData.departmentName);
+              });
+          });
+      }
+      
+        if (isEmployeeTypeChanged) {
+          const updateAssignment_DesignationSql =`
+            UPDATE assignment_designation
+            SET employeeType = ?
+            WHERE employee_ID = ?
+          `;
+  
+          db.query(updateAssignment_DesignationSql, [
+            employeeData.employeeType,
+            employeeId
+          ], (err) => {
+            if (err) {
+              console.error("Error updating employee type:", err);
+              return res.status(500).json({ error: "Internal Server Error" });
+            }
+          });
+        }
+  
+        console.log("Employee updated successfully:", employeeData);
+        res.status(200).json({ message: "Employee updated successfully" });
+      });
+    });
+  });
+});
 
   
   // Ensure this is placed outside the /addEmployee endpoint
