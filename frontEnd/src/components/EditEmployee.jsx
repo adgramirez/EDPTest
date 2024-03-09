@@ -1,13 +1,14 @@
-
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+import axios from 'axios'; // Import Axios
+
 import EditPersonalInput from "./EditPersonalInput.jsx";
 import EditAddressInput from './EditAddressInput.jsx';
 import WorkInput from './WorkInput.jsx';
 import DefaultButton from "./UI/DefaultButton.jsx";
 
 function EditEmployee({ editEmployeeVisibility, setEditEmployeeVisibility, setEmployees, employees}) {
-    const employee = employees[editEmployeeVisibility.index] //stores the employee object. but it should be passed to the individual input boxes
+    const employee = employees[editEmployeeVisibility.index];
 
     const [personal, setPersonal] = useState({
         employeeNumber: employee.employeeNumber,
@@ -35,27 +36,30 @@ function EditEmployee({ editEmployeeVisibility, setEditEmployeeVisibility, setEm
         setEditEmployeeVisibility({visibility: false, index: -1});
     }
 
-    const handleEditEmployee = () => {
-        console.log("Personal Object:", personal); // Display personal object to the console
-        console.log("Address Object:", address);
-        const work = {
-            employeeType: selectedEmployeeType,
-            designationName: selectedDesignation,
-            departmentName: selectedDepartment
-        }
-        console.log("Work Object:", work)
-    
+    const handleEditEmployee = async () => {
         const updatedEmployee = {
             ...personal,
             ...address,
-            ...work
+            employeeType: selectedEmployeeType,
+            designationName: selectedDesignation,
+            departmentName: selectedDepartment
         };
-    
-        const updatedEmployees = [...employees]; // Create a copy of the employees array
-        updatedEmployees[editEmployeeVisibility.index] = updatedEmployee; // Update the existing employee
-    
-        setEmployees(updatedEmployees); // Update the state with the modified employees array
-        setEditEmployeeVisibility({visibility: false, index: -1}); // Hide the edit form
+
+        try {
+            const response = await axios.put(`http://localhost:8081/editEmployee/${employee.employee_ID}`, updatedEmployee);
+
+            if (response.status === 200) {
+                const updatedEmployees = [...employees];
+                updatedEmployees[editEmployeeVisibility.index] = updatedEmployee;
+                setEmployees(updatedEmployees);
+                setEditEmployeeVisibility({visibility: false, index: -1});
+            } else {
+                // Handle error response
+                console.error('Failed to edit employee:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Failed to edit employee:', error.message);
+        }
     }
     
     return (
