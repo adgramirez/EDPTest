@@ -1,83 +1,49 @@
-import PropTypes from 'prop-types';
-import { useState } from 'react';
-import EditPersonalInput from "./EditPersonalInput.jsx";
-import EditAddressInput from './EditAddressInput.jsx';
-import WorkInput from './WorkInput.jsx';
-import DefaultButton from "./UI/DefaultButton.jsx";
+import { useState} from 'react'
+import EditInputBox from "./UI/EditInputBox"
 
-function EditEmployee({ editEmployeeVisibility, setEditEmployeeVisibility, setEmployees, employees}) {
-    const employee = employees[editEmployeeVisibility.index] //stores the employee object. but it should be passed to the individual input boxes
 
-    const [personal, setPersonal] = useState({
-        employeeNumber: employee.employeeNumber,
-        firstName: employee.firstName,
-        middleName: employee.middleName,
-        lastName: employee.lastName,
-        contactInformation: employee.contactInformation
-    });
+function EditAddressInput({ onAddressChange, employee }) {
+    const handleInputChange = (e, field) => {
+        const value = e.target.value;
+        onAddressChange(prevAddress => ({
+            ...prevAddress,
+            [field]: value
+        }));
+    };
 
-    const [address, setAddress] = useState({
-        houseNumber: employee.HouseNumber,
-        street: employee.Street,
-        barangay: employee.Barangay,
-        city: employee.City,
-        province: employee.Province,
-        country: employee.Country,
-        zipcode: employee.ZIPcode
-    });
-
-    const [selectedEmployeeType, setSelectedEmployeeType] = useState(employee.employeeType);
-    const [selectedDesignation, setSelectedDesignation] = useState(employee.designationName);
-    const [selectedDepartment, setSelectedDepartment] = useState(employee.departmentName);
-
-    const handleCancel = () => {
-        setEditEmployeeVisibility({visibility: false, index: -1});
-    }
-
-    const handleEditEmployee = () => {
-        console.log("Personal Object:", personal); // Display personal object to the console
-        console.log("Address Object:", address);
-        const work = {
-            employeeType: selectedEmployeeType,
-            designationName: selectedDesignation,
-            departmentName: selectedDepartment
-        }
-        console.log("Work Object:", work)
-    
-        const updatedEmployee = {
-            ...personal,
-            ...address,
-            ...work,
-            departmentName: selectedDepartment !== employee.departmentName ? selectedDepartment : employee.departmentName
-        };
-    
-        const updatedEmployees = [...employees]; // Create a copy of the employees array
-        updatedEmployees[editEmployeeVisibility.index] = updatedEmployee; // Update the existing employee
-    
-        setEmployees(updatedEmployees); // Update the state with the modified employees array
-        setEditEmployeeVisibility({visibility: false, index: -1}); // Hide the edit form
-    }
-    
     return (
-        <div>
-            <div className="add-employee-container">
-                <h1>Edit Employee</h1>
-                <EditPersonalInput onPersonalChange={setPersonal} employee={employee}/>
-                <EditAddressInput onAddressChange={setAddress} employee={employee}/>
-                <WorkInput onTypeChange={setSelectedEmployeeType} onDesignationChange={setSelectedDesignation} onDepartmentChange={setSelectedDepartment}/>
-                <div onClick={handleEditEmployee}>
-                    <DefaultButton label="Done"></DefaultButton>
-                </div>
-                <div onClick={handleCancel}>
-                    <DefaultButton label="Cancel"></DefaultButton>
-                </div>
+        <div className="flex left-align">
+            <p>2. Address Details</p>
+            <div>
+                <p>(House No.)</p>
+                <EditInputBox label="Ex. B10, L5" defaultValue={employee.houseNumber} onChange={(e) => handleInputChange(e, 'houseNumber')}/>
+            </div>
+            <div>
+                <p>(Street)</p>
+                <EditInputBox label="Ex. Aguila St." defaultValue={employee.street} onChange={(e) => handleInputChange(e, 'street')}/>
+            </div>
+            <div>
+                <p>(Barangay)</p>
+                <EditInputBox label="Ex. Tibungco" defaultValue={employee.barangay} onChange={(e) => handleInputChange(e, 'barangay')}/>
+            </div>
+            <div>
+                <p>(City)</p>
+                <EditInputBox label="Ex. Davao City" defaultValue={employee.city} onChange={(e) => handleInputChange(e, 'city')}/>
+            </div>
+            <div>
+                <p>(Province)</p>
+                <EditInputBox label="Ex. Davao del Sur" defaultValue={employee.province} onChange={(e) => handleInputChange(e, 'province')}/>
+            </div>
+            <div>
+                <p>(Country)</p>
+                <EditInputBox label="Ex. Philippines" defaultValue={employee.country} onChange={(e) => handleInputChange(e, 'country')}/>
+            </div>
+            <div>
+                <p>(Zip Code)</p>
+                <EditInputBox label="Ex. 8000" defaultValue={employee.zipcode} onChange={(e) => handleInputChange(e, 'zipcode')}/>
             </div>
         </div>
     )
 }
 
-EditEmployee.propTypes = {
-    setEditEmployeeVisibility: PropTypes.func.isRequired,
-};
-
-export default EditEmployee;
+export default EditAddressInput
