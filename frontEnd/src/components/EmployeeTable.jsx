@@ -1,20 +1,35 @@
+import React from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 import DefaultButton from './UI/DefaultButton';
-function EmployeeTable({employees, setEmployees, addEmployeeVisibility, setAddEmployeeVisibility, editEmployeeVisibility, setEditEmployeeVisibility}) {
-    const handleAdd = (e, field) => {
-        setAddEmployeeVisibility(true)
+
+function EmployeeTable({ employees, setEmployees, addEmployeeVisibility, setAddEmployeeVisibility, editEmployeeVisibility, setEditEmployeeVisibility, setDeleteEmployeeVisibility }) {
+    const handleAdd = () => {
+        setAddEmployeeVisibility(true);
     };
 
-    const handleDelete = (index) => {
-        const updatedEmployees = [...employees];
-        updatedEmployees.splice(index, 1);
-        setEmployees(updatedEmployees);
+    const handleDelete = async (employee_ID) => {
+        if (window.confirm('Are you sure you want to delete this employee?')) {
+            try {
+                const response = await axios.delete(`http://localhost:8081/deleteEmployee/${employee_ID}`);
+                if (response.status === 200) {
+                    // Handle successful deletion
+                    console.log("Employee deleted successfully");
+                    // Update the list of employees
+                    setEmployees(prevEmployees => prevEmployees.filter(emp => emp.employee_ID !== employee_ID));
+                } else {
+                    // Handle other status codes
+                    console.error("Error deleting employee:", response.data);
+                }
+            } catch (error) {
+                console.error("Error deleting employee:", error);
+                // Handle errors during deletion
+            }
+        }
     };
 
-    const employeeType = ["Regular", "Part-time", "Probation"];
-    const designationName = ["Manager", "Asst. Manager", "Staff"];
-    const departmentName = ["Administration", "HR", "Marketing", "Accounting", "IT"];
 
+    
     return (
         <div>
             <table className="border-black border border-solid border-collapse">
@@ -37,21 +52,21 @@ function EmployeeTable({employees, setEmployees, addEmployeeVisibility, setAddEm
                                 <td>{employee.employeeNumber}</td>
                                 <td>{employee.firstName + " " + employee.middleName + " " + employee.lastName}</td>
                                 <td>{employee.contactInformation}</td>
-                                <td>{employee.houseNumber + ', ' + employee.street  + ', ' + employee.barangay + ', ' + employee.city + ', ' + employee.province + ', ' + employee.country + ', ' + employee.zipcode}</td>
-                                <td>{designationName[parseInt(employee.designationName) - 1]}</td>
-                                <td>{employeeType[parseInt(employee.employeeType) - 1]}</td>
-                                <td>{departmentName[parseInt(employee.departmentName) - 1]}</td>
+                                <td>{employee.HouseNumber + ', ' + employee.Street + ', ' + employee.Barangay + ', ' + employee.City + ', ' + employee.Province + ', ' + employee.Country + ', ' + employee.ZIPcode}</td>
+                                <td>{employee.designationName}</td>
+                                <td>{employee.employeeType}</td>
+                                <td>{employee.departmentName}</td>
                                 <td>
                                     <div className='edit-delete-buttons'>
-                                        <button className='edit-button' onClick={() => setEditEmployeeVisibility({visibility: true, index: index})}>Edit Details</button>
-                                        <button className='delete-button' onClick={() => handleDelete(index)}>Remove Employee</button>
+                                        <button className='edit-button' onClick={() => setEditEmployeeVisibility({ visibility: true, index: index })}>Edit Details</button>
+                                        <button className='delete-button' onClick={() => handleDelete(employee.employee_ID)}>Remove Employee</button>
                                     </div>
                                 </td>
                             </tr>
                         ))
                     ) : (
                         <tr>
-                            <td id="empty-list-label" colSpan={9} className="border-black border border-solid border-collapse" >No employees found</td>
+                            <td id="empty-list-label" colSpan={9} className="border-black border border-solid border-collapse">No employees found</td>
                         </tr>
                     )}
                 </tbody>
@@ -59,19 +74,26 @@ function EmployeeTable({employees, setEmployees, addEmployeeVisibility, setAddEm
             <div className='add-button-container' onClick={handleAdd}>
                 {!addEmployeeVisibility && <DefaultButton label="Add New Employee"></DefaultButton>}
             </div>
-            
+
         </div>
-        
+
     );
 }
 
 EmployeeTable.propTypes = {
     employees: PropTypes.arrayOf(
         PropTypes.shape({
-            employeeNo: PropTypes.string.isRequired,
+            employee_ID: PropTypes.number.isRequired, // Assuming employeeId is the unique identifier
+            employeeNumber: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
             name: PropTypes.string.isRequired,
             contact: PropTypes.string.isRequired,
-            address: PropTypes.string.isRequired,
+            houseNumber: PropTypes.string.isRequired,
+            street: PropTypes.string.isRequired,
+            barangay: PropTypes.string.isRequired,
+            city: PropTypes.string.isRequired,
+            province: PropTypes.string.isRequired,
+            country: PropTypes.string.isRequired,
+            zipcode: PropTypes.string.isRequired,
             designation: PropTypes.string.isRequired,
             employeeType: PropTypes.string.isRequired,
             status: PropTypes.string.isRequired,
@@ -80,7 +102,9 @@ EmployeeTable.propTypes = {
     ).isRequired,
     setEmployees: PropTypes.func.isRequired,
     addEmployeeVisibility: PropTypes.bool.isRequired,
-    setAddEmployeeVisibility: PropTypes.func.isRequired, 
+    setAddEmployeeVisibility: PropTypes.func.isRequired,
+    setDeleteEmployeeVisibility: PropTypes.func.isRequired,
+    setEditEmployeeVisibility: PropTypes.func.isRequired,
 };
 
 export default EmployeeTable;

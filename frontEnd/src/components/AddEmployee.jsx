@@ -1,6 +1,7 @@
 // addemployee.jsx
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+import axios from 'axios';
 import PersonalInput from "./PersonalInput";
 import AddressInput from './AddressInput.jsx';
 import WorkInput from './WorkInput.jsx';
@@ -16,13 +17,13 @@ function AddEmployee({ setAddEmployeeVisibility, setEmployees }) {
     });
 
     const [address, setAddress] = useState({
-        houseNumber: "",
-        street: "",
-        barangay: "",
-        city: "",
-        province: "",
-        country: "",
-        zipcode: ""
+        HouseNumber: "",
+        Street: "",
+        Barangay: "",
+        City: "",
+        Province: "",
+        Country: "",
+        ZIPcode: ""
     });
 
     const [selectedEmployeeType, setSelectedEmployeeType] = useState('');
@@ -33,25 +34,34 @@ function AddEmployee({ setAddEmployeeVisibility, setEmployees }) {
         setAddEmployeeVisibility(false);
     }
 
-    const handleAddEmployee = () => {
+    const handleAddEmployee = async () => {
         console.log("Personal Object:", personal); // Display personal object to the console
         console.log("Address Object:", address);
-        const work = {
+            const work = {
             employeeType: selectedEmployeeType,
             designationName: selectedDesignation,
             departmentName: selectedDepartment
         }
-        console.log("Work Object:", work)
-
         const employee = {
-            ...personal,
-            ...address,
-            ...work
+          ...personal,
+          ...address,
+          ...work
         };
-
-        setEmployees(prevEmployees => [...prevEmployees, employee]);
-        setAddEmployeeVisibility(false);
-    }
+      
+        try {
+          const response = await axios.post('http://localhost:8081/addEmployee', employee); // Replace `/api/employees` with your actual endpoint
+          if (response.status === 201) { // Check for successful creation (status code 201)
+            setEmployees(prevEmployees => [...prevEmployees, employee]);
+            setAddEmployeeVisibility(false);
+          } else {
+            console.error("Error adding employee:", response.data);
+            // Handle any other error cases
+          }
+        } catch (error) {
+          console.error("Error adding employee:", error);
+          // Handle errors during API call
+        }
+      };
 
     return (
         <div>

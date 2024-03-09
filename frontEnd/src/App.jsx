@@ -1,75 +1,71 @@
-/* eslint-disable no-unused-vars */
-import { useEffect, useState} from 'react'
-import EmployeeTable from './components/EmployeeTable.jsx';
-import AddEmployee from './components/AddEmployee.jsx';
-import EditEmployee from './components/EditEmployee.jsx';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import EmployeeTable from './components/EmployeeTable';
+import AddEmployee from './components/AddEmployee';
+import EditEmployee from './components/EditEmployee';
+import DeleteEmployee from './components/DeleteEmployee'; // Import the DeleteEmployee component
 
 function App() {
-  //source should be database
-  const [employees, setEmployees] = useState([{
-    employeeNumber: '320',
-    firstName: 'j',
-    middleName: 'k',
-    lastName: 'rl',
-    contactInformation: '0922',
-    houseNumber: '318',
-    street: 'aguila',
-    barangay: 'mandug',
-    city: 'davao city',
-    province: 'davao del sur',
-    country: 'philippines',
-    zipcode: '8000',
-    designationName: 1,
-    employeeType: 2,
-    departmentName: 4,
-  }, {
-    employeeNumber: '320',
-    firstName: 'a',
-    middleName: 'd',
-    lastName: 'gr',
-    contactInformation: '0928',
-    houseNumber: '318',
-    street: 'quirino',
-    barangay: 'idk',
-    city: 'davao city',
-    province: 'davao del sur',
-    country: 'philippines',
-    zipcode: '8000',
-    designationName: 3,
-    employeeType: 1,
-    departmentName: 2,
-  }]);
-
-  const [data, setData] = useState([])
-  useEffect(()=>{
-    fetch('http://localhost:8081/department')
-    .then(res => res.json())
-    .then(data => setData(data))
-    .catch(err => console.log(err));
-  }, [])
-
+  const [employees, setEmployees] = useState([]);
   const [addEmployeeVisibility, setAddEmployeeVisibility] = useState(false);
   const [editEmployeeVisibility, setEditEmployeeVisibility] = useState({
     visibility: false,
     index: -1
   });
+  const [deleteEmployeeVisibility, setDeleteEmployeeVisibility] = useState(null); // State to manage the visibility of DeleteEmployee
 
-  return(
-    <>
-      <div className='default-container'>
-        <div className='table-button-container'>
-          <EmployeeTable employees={employees} setEmployees={setEmployees} addEmployeeVisibility={addEmployeeVisibility} setAddEmployeeVisibility={setAddEmployeeVisibility} editEmployeeVisibility={editEmployeeVisibility} setEditEmployeeVisibility={setEditEmployeeVisibility}/>
-        </div>
-        <div className='default-container'>
-          {addEmployeeVisibility && <AddEmployee setAddEmployeeVisibility={setAddEmployeeVisibility} setEmployees={setEmployees}></AddEmployee>}
-          {editEmployeeVisibility.visibility && <EditEmployee editEmployeeVisibility={editEmployeeVisibility} setEditEmployeeVisibility={setEditEmployeeVisibility} setEmployees={setEmployees} employees={employees}></EditEmployee>}
-        </div>
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const employeesResponse = await axios.get('http://localhost:8081/employee');
+        setEmployees(employeesResponse.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  return (
+    <div className='default-container'>
+      <div className='table-button-container'>
+        <EmployeeTable
+          employees={employees}
+          setEmployees={setEmployees}
+          addEmployeeVisibility={addEmployeeVisibility}
+          setAddEmployeeVisibility={setAddEmployeeVisibility}
+          editEmployeeVisibility={editEmployeeVisibility}
+          setEditEmployeeVisibility={setEditEmployeeVisibility}
+          setDeleteEmployeeVisibility={setDeleteEmployeeVisibility} // Pass down setDeleteEmployeeVisibility to EmployeeTable
+        />
       </div>
-      
-      
-    </>
-    
-  )
+      <div className='default-container'>
+        {addEmployeeVisibility && (
+          <AddEmployee
+            setAddEmployeeVisibility={setAddEmployeeVisibility}
+            setEmployees={setEmployees}
+          />
+        )}
+        {editEmployeeVisibility.visibility && (
+          <EditEmployee
+            editEmployeeVisibility={editEmployeeVisibility}
+            setEditEmployeeVisibility={setEditEmployeeVisibility}
+            setEmployees={setEmployees}
+            employees={employees}
+          />
+        )}
+        {/* Render the DeleteEmployee component when deleteEmployeeVisibility is not null */}
+        {deleteEmployeeVisibility && (
+          <DeleteEmployee
+            employeeNumber={deleteEmployeeVisibility}
+            setDeleteEmployeeVisibility={setDeleteEmployeeVisibility}
+            setEmployees={setEmployees}
+          />
+        )}
+      </div>
+    </div>
+  );
 }
 
-export default App
+export default App;
