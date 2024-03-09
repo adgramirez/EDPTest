@@ -1,4 +1,3 @@
-// personalinput.jsx
 import EditInputBox from "./UI/EditInputBox";
 
 function EditPersonalInput({ onPersonalChange, employee }) {
@@ -9,7 +8,6 @@ function EditPersonalInput({ onPersonalChange, employee }) {
             [field]: value
         }));
     };
-
 
     return (
         <div className="flex left-align">

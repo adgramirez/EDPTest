@@ -382,11 +382,7 @@ app.put('/editEmployee/:employee_ID', (req, res) => {
     });
   });
 });
-
   
-  // Ensure this is placed outside the /addEmployee endpoint
-  
-
 app.listen(8081, () => {
   console.log("listening");
 });

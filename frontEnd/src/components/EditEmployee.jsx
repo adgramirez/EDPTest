@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import axios from 'axios'; // Import Axios
+import axios from 'axios';
 
 import EditPersonalInput from "./EditPersonalInput.jsx";
 import EditAddressInput from './EditAddressInput.jsx';
@@ -54,7 +54,6 @@ function EditEmployee({ editEmployeeVisibility, setEditEmployeeVisibility, setEm
                 setEmployees(updatedEmployees);
                 setEditEmployeeVisibility({visibility: false, index: -1});
             } else {
-                // Handle error response
                 console.error('Failed to edit employee:', response.statusText);
             }
         } catch (error) {
