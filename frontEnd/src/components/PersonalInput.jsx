@@ -1,6 +1,4 @@
-// personalinput.jsx
 import InputBox from "./UI/InputBox";
-import { useEffect } from 'react';
 
 function PersonalInput({ onPersonalChange }) {
     const handleInputChange = (e, field) => {
@@ -10,8 +8,6 @@ function PersonalInput({ onPersonalChange }) {
             [field]: value
         }));
     };
-
-    // useEffect removed, it's now handled in AddEmployee
 
     return (
         <div className="flex left-align">

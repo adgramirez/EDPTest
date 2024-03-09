@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import axios from 'axios'; // Import Axios
+import axios from 'axios';
 
 import EditPersonalInput from "./EditPersonalInput.jsx";
 import EditAddressInput from './EditAddressInput.jsx';
@@ -19,13 +19,13 @@ function EditEmployee({ editEmployeeVisibility, setEditEmployeeVisibility, setEm
     });
 
     const [address, setAddress] = useState({
-        houseNumber: employee.HouseNumber,
-        street: employee.Street,
-        barangay: employee.Barangay,
-        city: employee.City,
-        province: employee.Province,
-        country: employee.Country,
-        zipcode: employee.ZIPcode
+        HouseNumber: employee.HouseNumber,
+        Street: employee.Street,
+        Barangay: employee.Barangay,
+        City: employee.City,
+        Province: employee.Province,
+        Country: employee.Country,
+        ZIPcode: employee.ZIPcode
     });
 
     const [selectedEmployeeType, setSelectedEmployeeType] = useState(employee.employeeType);
@@ -45,6 +45,8 @@ function EditEmployee({ editEmployeeVisibility, setEditEmployeeVisibility, setEm
             departmentName: selectedDepartment
         };
 
+        console.log("Updated Employee: ", updatedEmployee)
+
         try {
             const response = await axios.put(`http://localhost:8081/editEmployee/${employee.employee_ID}`, updatedEmployee);
 
@@ -54,7 +56,6 @@ function EditEmployee({ editEmployeeVisibility, setEditEmployeeVisibility, setEm
                 setEmployees(updatedEmployees);
                 setEditEmployeeVisibility({visibility: false, index: -1});
             } else {
-                // Handle error response
                 console.error('Failed to edit employee:', response.statusText);
             }
         } catch (error) {
