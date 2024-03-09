@@ -9,7 +9,7 @@ app.use(express.json());
 const db = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "AdDU2202201425196",
+    password: "Root",
     database: "edp"
 });
 
@@ -185,11 +185,33 @@ app.post('/addEmployee', (req, res) => {
           }
           return res.status(201).json({ message: "Employee added successfully" });
         });
-        });
-      });
+
+    });
+
     });
   });
+  });
+  });
+
+  app.delete('/deleteEmployee/:employee_ID', (req, res) => {
+    const { employee_ID } = req.params; // Corrected parameter name
+
+    const sql = `DELETE FROM edp.employee WHERE employee_ID = ?;`;
+
+    db.query(sql, [employee_ID], (err, result) => {
+        if (err) {
+            console.error("Error deleting employee:", err);
+            return res.status(500).json({ error: "Internal Server Error" });
+        }
+        console.log("Employee deleted successfully");
+        return res.status(200).json({ message: "Employee deleted successfully" });
+    });
 });
+
+
+  
+  // Ensure this is placed outside the /addEmployee endpoint
+  
 
 app.listen(8081, () => {
   console.log("listening");
