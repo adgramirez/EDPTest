@@ -7,11 +7,12 @@ app.use(cors());
 app.use(express.json());
 
 const db = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "Root",
-    database: "edp"
+  host: "localhost",
+  user: "root",
+  password: "AdDU2202201425196",
+  database: "edp"
 });
+
 
 app.get('/', (req, res) => {
   const sql = `
@@ -169,8 +170,8 @@ app.post('/addEmployee', (req, res) => {
     });
 });
 
-app.put('/editEmployee/:id', (req, res) => {
-  const employeeId = req.params.id;
+app.put('/editEmployee/:employee_ID', (req, res) => {
+  const employeeId = req.params.employee_ID;
   const employeeData = req.body;
 
   // Fetch current designation and department names from the database
