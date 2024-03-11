@@ -1,4 +1,3 @@
-// addemployee.jsx
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import axios from 'axios';
@@ -35,7 +34,7 @@ function AddEmployee({ setAddEmployeeVisibility, setEmployees }) {
     }
 
     const handleAddEmployee = async () => {
-        console.log("Personal Object:", personal); // Display personal object to the console
+        console.log("Personal Object:", personal);
         console.log("Address Object:", address);
             const work = {
             employeeType: selectedEmployeeType,
@@ -49,17 +48,15 @@ function AddEmployee({ setAddEmployeeVisibility, setEmployees }) {
         };
       
         try {
-          const response = await axios.post('http://localhost:8081/addEmployee', employee); // Replace `/api/employees` with your actual endpoint
-          if (response.status === 201) { // Check for successful creation (status code 201)
+          const response = await axios.post('http://localhost:8081/addEmployee', employee); 
+          if (response.status === 201) { 
             setEmployees(prevEmployees => [...prevEmployees, employee]);
             setAddEmployeeVisibility(false);
           } else {
             console.error("Error adding employee:", response.data);
-            // Handle any other error cases
           }
         } catch (error) {
           console.error("Error adding employee:", error);
-          // Handle errors during API call
         }
       };
 

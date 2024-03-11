@@ -3,7 +3,7 @@ import axios from 'axios';
 import EmployeeTable from './components/EmployeeTable';
 import AddEmployee from './components/AddEmployee';
 import EditEmployee from './components/EditEmployee';
-import DeleteEmployee from './components/DeleteEmployee'; // Import the DeleteEmployee component
+import DeleteEmployee from './components/DeleteEmployee';
 
 function App() {
   const [employees, setEmployees] = useState([]);
@@ -12,7 +12,7 @@ function App() {
     visibility: false,
     index: -1
   });
-  const [deleteEmployeeVisibility, setDeleteEmployeeVisibility] = useState(null); // State to manage the visibility of DeleteEmployee
+  const [deleteEmployeeVisibility, setDeleteEmployeeVisibility] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,7 +37,7 @@ function App() {
           setAddEmployeeVisibility={setAddEmployeeVisibility}
           editEmployeeVisibility={editEmployeeVisibility}
           setEditEmployeeVisibility={setEditEmployeeVisibility}
-          setDeleteEmployeeVisibility={setDeleteEmployeeVisibility} // Pass down setDeleteEmployeeVisibility to EmployeeTable
+          setDeleteEmployeeVisibility={setDeleteEmployeeVisibility} 
         />
       </div>
       <div className='default-container'>
@@ -55,7 +55,7 @@ function App() {
             employees={employees}
           />
         )}
-        {/* Render the DeleteEmployee component when deleteEmployeeVisibility is not null */}
+        {}
         {deleteEmployeeVisibility && (
           <DeleteEmployee
             employeeNumber={deleteEmployeeVisibility}
