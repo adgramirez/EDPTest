@@ -9,18 +9,14 @@ function DeleteEmployee({ employee, setDeleteEmployeeVisibility, setEmployees })
     try {
       const response = await axios.delete(`http://localhost:8081/deleteEmployee/${employee.employee_ID}`);
       if (response.status === 200) {
-        // Handle successful deletion
         console.log("Employee deleted successfully");
-        // Update the list of employees
         setEmployees(prevEmployees => prevEmployees.filter(emp => emp.employee_ID !== employee.employee_ID));
         setDeleted(true);
       } else {
-        // Handle other status codes
         console.error("Error deleting employee:", response.data);
       }
     } catch (error) {
       console.error("Error deleting employee:", error);
-      // Handle errors during deletion
     }
   };
 
@@ -50,7 +46,6 @@ DeleteEmployee.propTypes = {
   employee: PropTypes.shape({
     employee_ID: PropTypes.number.isRequired,
     employeeNumber: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-    // Add other employee properties here as needed
   }).isRequired,
   setDeleteEmployeeVisibility: PropTypes.func.isRequired,
   setEmployees: PropTypes.func.isRequired,

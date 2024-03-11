@@ -7,28 +7,21 @@ function EmployeeTable({ employees, setEmployees, addEmployeeVisibility, setAddE
     const handleAdd = () => {
         setAddEmployeeVisibility(true);
     };
-
     const handleDelete = async (employee_ID) => {
         if (window.confirm('Are you sure you want to delete this employee?')) {
             try {
                 const response = await axios.delete(`http://localhost:8081/deleteEmployee/${employee_ID}`);
                 if (response.status === 200) {
-                    // Handle successful deletion
                     console.log("Employee deleted successfully");
-                    // Update the list of employees
                     setEmployees(prevEmployees => prevEmployees.filter(emp => emp.employee_ID !== employee_ID));
                 } else {
-                    // Handle other status codes
                     console.error("Error deleting employee:", response.data);
                 }
             } catch (error) {
                 console.error("Error deleting employee:", error);
-                // Handle errors during deletion
             }
         }
     };
-
-
     
     return (
         <div>
@@ -74,16 +67,14 @@ function EmployeeTable({ employees, setEmployees, addEmployeeVisibility, setAddE
             <div className='add-button-container' onClick={handleAdd}>
                 {!addEmployeeVisibility && <DefaultButton label="Add New Employee"></DefaultButton>}
             </div>
-
         </div>
-
     );
 }
 
 EmployeeTable.propTypes = {
     employees: PropTypes.arrayOf(
         PropTypes.shape({
-            employee_ID: PropTypes.number.isRequired, // Assuming employeeId is the unique identifier
+            employee_ID: PropTypes.number.isRequired,
             employeeNumber: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
             name: PropTypes.string.isRequired,
             contact: PropTypes.string.isRequired,
@@ -96,7 +87,6 @@ EmployeeTable.propTypes = {
             ZIPcode: PropTypes.string.isRequired,
             designation: PropTypes.string.isRequired,
             employeeType: PropTypes.string.isRequired,
-            status: PropTypes.string.isRequired,
             department: PropTypes.string.isRequired,
         })
     ).isRequired,

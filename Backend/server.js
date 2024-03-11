@@ -13,7 +13,6 @@ const db = mysql.createConnection({
   database: "edp"
 });
 
-
 app.get('/', (req, res) => {
   const sql = `
     SELECT employee.*, address.*, designation.*, assignment_designation.employeeType, department.*
@@ -25,13 +24,11 @@ app.get('/', (req, res) => {
   `;
   db.query(sql, (err, data) => {
     if (err) return res.status(500).json({ error: "Internal Server Error" });
-    console.log(data); // Log the entire response data
+    console.log(data);
     return res.json(data);
   });
 });
 
-// Endpoint for employees
-// Update the /employee endpoint
 app.get('/employee', (req, res) => {
     const sql = `
         SELECT employee.*, address.*, designation.*, assignment_designation.employeeType, department.*
@@ -43,7 +40,7 @@ app.get('/employee', (req, res) => {
     `;
     db.query(sql, (err, data) => {
         if (err) return res.status(500).json({ error: "Internal Server Error" });
-        console.log(data); // Log the entire response data
+        console.log(data);
         return res.json(data);
     });
 });
@@ -52,7 +49,7 @@ app.post('/addEmployee', (req, res) => {
   const employeeData = req.body;
   console.log("Received employee data:", employeeData);
 
-  // 1. Prepare address data
+  // Add Address
   const address = {
     HouseNumber: employeeData.HouseNumber,
     Street: employeeData.Street,
@@ -62,119 +59,95 @@ app.post('/addEmployee', (req, res) => {
     Country: employeeData.Country,
     ZIPcode: employeeData.ZIPcode
   };
-
   console.log("Processed address data:", address);
-
-  // 2. Insert address first and get the generated address_id
   db.query("INSERT INTO address SET ?", address, (err, addressResult) => {
     if (err) {
       console.error("Error adding address:", err);
       return res.status(500).json({ error: "Internal Server Error" });
     }
-
     const address_ID = addressResult.insertId;
 
-    // 3. Insert department (always attempt to create a new one)
+    // Add Department
     const department = {
       departmentName: employeeData.departmentName
     }
-
     console.log("Processed department data:", department);
-
     db.query(
       "INSERT INTO department SET ?", department, (err, departmentResult) => {
         if (err) {
           console.error("Error adding department:", err);
           return res.status(500).json({ error: "Internal Server Error" });
         }
-
         const department_id = departmentResult.insertId;
 
-        // 4. Prepare designation data (including department_id)
+        // Add Designation
         const designation = {
           designationName: employeeData.designationName,
-          department_ID: department_id, // Always use the newly created ID
+          department_ID: department_id,
         };
-
     console.log("Processed designation data:", designation);
-
-    // 5. Insert designation data and get generated designation_id
-    db.query("INSERT INTO designation SET ?", designation, (err, designationResult) => {
-      if (err) {
-        console.error("Error adding designation:", err);
-        return res.status(500).json({ error: "Internal Server Error" });
-      }
-
-      const designation_ID = designationResult.insertId;
-    
-      // 6. Prepare employee data
-      const employee = {
-        employeeNumber: employeeData.employeeNumber,
-        firstName: employeeData.firstName,
-        middleName: employeeData.middleName,
-        lastName: employeeData.lastName,
-        contactInformation: employeeData.contactInformation,
-        address_ID: address_ID,
-        // Removed designation_id as it's not present in the employee table
-      };
-
-      console.log("Processed employee data:", employee);
-
-      // 7. Insert employee data
-      db.query("INSERT INTO employee SET ?", employee, (err, employeeResult) => {
+      db.query("INSERT INTO designation SET ?", designation, (err, designationResult) => {
         if (err) {
-          console.error("Error adding employee:", err);
+          console.error("Error adding designation:", err);
           return res.status(500).json({ error: "Internal Server Error" });
         }
-
-        const employee_ID = employeeResult.insertId;
-
-        
-
-        // 8. Insert assignment_designation data (regardless of department selection)
-        const assignment_designation = {
-          employee_ID: employee_ID,
-          designation_ID: designation_ID,
-          employeeType: employeeData.employeeType
+        const designation_ID = designationResult.insertId;
+      
+        // Add Employee 
+        const employee = {
+          employeeNumber: employeeData.employeeNumber,
+          firstName: employeeData.firstName,
+          middleName: employeeData.middleName,
+          lastName: employeeData.lastName,
+          contactInformation: employeeData.contactInformation,
+          address_ID: address_ID,
         };
-
-        console.log("Processed assignment_designation data:",  assignment_designation);
-
-        db.query("INSERT INTO assignment_designation SET ?", assignment_designation, (err) => {
+        console.log("Processed employee data:", employee);
+        db.query("INSERT INTO employee SET ?", employee, (err, employeeResult) => {
           if (err) {
-            console.error("Error adding assignment_designation:", err);
+            console.error("Error adding employee:", err);
             return res.status(500).json({ error: "Internal Server Error" });
           }
-          return res.status(201).json({ message: "Employee added successfully" });
+          const employee_ID = employeeResult.insertId;
+
+          // Add Assignment_Designation
+          const assignment_designation = {
+            employee_ID: employee_ID,
+            designation_ID: designation_ID,
+            employeeType: employeeData.employeeType
+          };
+          console.log("Processed assignment_designation data:",  assignment_designation);
+          db.query("INSERT INTO assignment_designation SET ?", assignment_designation, (err) => {
+            if (err) {
+              console.error("Error adding assignment_designation:", err);
+              return res.status(500).json({ error: "Internal Server Error" });
+            }
+            return res.status(201).json({ message: "Employee added successfully" });
+          });
         });
-
-    });
-
+      });
     });
   });
+});
+
+app.delete('/deleteEmployee/:employee_ID', (req, res) => {
+  const { employee_ID } = req.params;
+
+  const sql = `DELETE FROM edp.employee WHERE employee_ID = ?;`;
+  db.query(sql, [employee_ID], (err, result) => {
+    if (err) {
+      console.error("Error deleting employee:", err);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+    console.log("Employee deleted successfully");
+     return res.status(200).json({ message: "Employee deleted successfully" });
   });
-  });
-
-  app.delete('/deleteEmployee/:employee_ID', (req, res) => {
-    const { employee_ID } = req.params; // Corrected parameter name
-
-    const sql = `DELETE FROM edp.employee WHERE employee_ID = ?;`;
-
-    db.query(sql, [employee_ID], (err, result) => {
-        if (err) {
-            console.error("Error deleting employee:", err);
-            return res.status(500).json({ error: "Internal Server Error" });
-        }
-        console.log("Employee deleted successfully");
-        return res.status(200).json({ message: "Employee deleted successfully" });
-    });
 });
 
 app.put('/editEmployee/:employee_ID', (req, res) => {
   const employeeId = req.params.employee_ID;
   const employeeData = req.body;
 
-  // Fetch current designation and department names from the database
   db.query(`
       SELECT a.address_ID, employeeType, d.designationName, dept.departmentName
       FROM assignment_designation ad
@@ -185,7 +158,6 @@ app.put('/editEmployee/:employee_ID', (req, res) => {
       WHERE ad.employee_ID = ?;
   `, [employeeId], (err, results) => {
 
-    
     if (err) {
       console.error("Error fetching current employee details:", err);
       return res.status(500).json({ error: "Internal Server Error" });
@@ -195,18 +167,13 @@ app.put('/editEmployee/:employee_ID', (req, res) => {
       console.error("No current employee details found for employee ID:", employeeId);
       return res.status(404).json({ error: "Employee not found" });
     }
-
     const currentEmployeeDetails = results[0];
-    console.log("Current address_ID: ", currentEmployeeDetails.address_ID);
-
     console.log("Current Employee Details:", currentEmployeeDetails);
 
-    // Extract designationName, departmentName, and employeeType from the fetched data
     const currentDesignationName = currentEmployeeDetails.designationName;
     const currentDepartmentName = currentEmployeeDetails.departmentName;
     const currentEmployeeType = currentEmployeeDetails.employeeType;
 
-    // Compare with the new values from employeeData
     const isDesignationChanged = employeeData.designationName !== currentDesignationName;
     const isDepartmentChanged = employeeData.departmentName !== currentDepartmentName;
     const isEmployeeTypeChanged = employeeData.employeeType !== currentEmployeeType;
@@ -215,7 +182,7 @@ app.put('/editEmployee/:employee_ID', (req, res) => {
     console.log("isDepartmentChanged: ", isDepartmentChanged);
     console.log("isEmployeeTypeChanged: ", isEmployeeTypeChanged);
 
-    // Update employee table
+    // Edit Employee
     const updateEmployeeSql = `
       UPDATE employee
       SET employeeNumber = ?,
@@ -241,7 +208,7 @@ app.put('/editEmployee/:employee_ID', (req, res) => {
         return res.status(500).json({ error: "Internal Server Error" });
       }
 
-      // Update address table
+      // Update Address
       const updateAddressSql = `
         UPDATE address
         SET HouseNumber = ?,
@@ -268,14 +235,10 @@ app.put('/editEmployee/:employee_ID', (req, res) => {
           console.error("Error updating address:", err);
           return res.status(500).json({ error: "Internal Server Error" });
         }
-
         console.log("Address updated successfully:", employeeData);
-        
-        // Now you can proceed with updating other tables (designation, department, etc.) if needed
 
-        // Update designation and department tables if necessary
+        // Update Designation and Department
         if (isDesignationChanged) {
-          // Fetch the designation ID based on the employee ID
           db.query(`
             SELECT designation_ID
             FROM assignment_designation
@@ -285,21 +248,19 @@ app.put('/editEmployee/:employee_ID', (req, res) => {
                   console.error("Error fetching designation ID:", err);
                   return res.status(500).json({ error: "Internal Server Error" });
               }
-      
               if (results.length === 0) {
                   console.error("No designation found for employee ID:", employeeId);
                   return res.status(404).json({ error: "Designation not found" });
-              }
-      
+              }      
               const designationId = results[0].designation_ID;
       
-              // Update designation table
+              // Update Designation
               const updateDesignationSql = `
                 UPDATE designation
                 SET designationName = ?
                 WHERE designation_ID = ?
               `;
-      
+
               db.query(updateDesignationSql, [
                   employeeData.designationName,
                   designationId
@@ -308,14 +269,13 @@ app.put('/editEmployee/:employee_ID', (req, res) => {
                       console.error("Error updating designation:", err);
                       return res.status(500).json({ error: "Internal Server Error" });
                   }
-      
                   console.log("Designation updated successfully:", employeeData.designationName);
               });
           });
         }
 
+        // Update Department
         if (isDepartmentChanged) {
-          // Fetch the department ID based on the designation ID
           db.query(`
             SELECT department_ID
             FROM designation
@@ -329,15 +289,12 @@ app.put('/editEmployee/:employee_ID', (req, res) => {
                   console.error("Error fetching department ID:", err);
                   return res.status(500).json({ error: "Internal Server Error" });
               }
-      
               if (results.length === 0) {
                   console.error("No department found for employee ID:", employeeId);
                   return res.status(404).json({ error: "Department not found" });
               }
-      
               const departmentId = results[0].department_ID;
       
-              // Update department table
               const updateDepartmentSql = `
                 UPDATE department
                 SET departmentName = ?
@@ -352,12 +309,12 @@ app.put('/editEmployee/:employee_ID', (req, res) => {
                       console.error("Error updating department:", err);
                       return res.status(500).json({ error: "Internal Server Error" });
                   }
-      
                   console.log("Department updated successfully:", employeeData.departmentName);
               });
           });
       }
-      
+
+      // Update EmployeeType
         if (isEmployeeTypeChanged) {
           const updateAssignment_DesignationSql =`
             UPDATE assignment_designation
@@ -375,7 +332,6 @@ app.put('/editEmployee/:employee_ID', (req, res) => {
             }
           });
         }
-  
         console.log("Employee updated successfully:", employeeData);
         res.status(200).json({ message: "Employee updated successfully" });
       });
