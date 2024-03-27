@@ -6,6 +6,7 @@ import EmployeeTable from './components/EmployeeTable';
 import AddEmployee from './components/AddEmployee';
 import EditEmployee from './components/EditEmployee';
 import DeleteEmployee from './components/DeleteEmployee';
+import SuperiorTable from './components/Milestone3/SuperiorTable';
 import AddSuperior from './components/Milestone3/AddSuperior';
 
 function App() {
@@ -17,8 +18,24 @@ function App() {
   });
   const [deleteEmployeeVisibility, setDeleteEmployeeVisibility] = useState(null);
 
-  const [superiors, setSuperiors] = useState([]);
-  const [addSuperiorVisibility, setAddSuperiorVisibility] = useState(true);
+  const [superiors, setSuperiors] = useState([{
+    superiorNumber: "123",
+        firstName: "j",
+        middleName: "k",
+        lastName: "l",
+        contactInformation: "0922",
+        HouseNumber: "b10",
+        Street: "aguila",
+        Barangay: "mandug",
+        City: "dv",
+        Province: "dds",
+        Country: "ph",
+        ZIPcode: "800",
+        employeeType: "reg",
+        designationName: "manager",
+        departmentName: "it"
+  }]);
+  const [addSuperiorVisibility, setAddSuperiorVisibility] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,6 +86,15 @@ function App() {
             setEmployees={setEmployees}
           />
         )}
+      </div>
+
+      <div className='table-button-container'>
+        <SuperiorTable
+          superiors={superiors}
+          setSuperiors={setSuperiors}
+          addSuperiorVisibility={addSuperiorVisibility}
+          setAddSuperiorVisibility={setAddSuperiorVisibility}
+        />
       </div>
       <div className='default-container'>
       {addSuperiorVisibility && (<AddSuperior 

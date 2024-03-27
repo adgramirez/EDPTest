@@ -8,21 +8,21 @@ function SuperiorTable({ superiors, setSuperiors, addSuperiorVisibility, setAddS
     const handleAdd = () => {
         setAddSuperiorVisibility(true);
     };
-    const handleDelete = async (superior_ID) => {
-        if (window.confirm('Are you sure you want to delete this superior?')) {
-            try {
-                const response = await axios.delete(`http://localhost:8081/deleteSuperior/${superior_ID}`);
-                if (response.status === 200) {
-                    console.log("Superior deleted successfully");
-                    setSuperiors(prevSuperiors => prevSuperiors.filter(emp => emp.superior_ID !== superior_ID));
-                } else {
-                    console.error("Error deleting superior:", response.data);
-                }
-            } catch (error) {
-                console.error("Error deleting superior:", error);
-            }
-        }
-    };
+    // const handleDelete = async (superior_ID) => {
+    //     if (window.confirm('Are you sure you want to delete this superior?')) {
+    //         try {
+    //             const response = await axios.delete(`http://localhost:8081/deleteSuperior/${superior_ID}`);
+    //             if (response.status === 200) {
+    //                 console.log("Superior deleted successfully");
+    //                 setSuperiors(prevSuperiors => prevSuperiors.filter(emp => emp.superior_ID !== superior_ID));
+    //             } else {
+    //                 console.error("Error deleting superior:", response.data);
+    //             }
+    //         } catch (error) {
+    //             console.error("Error deleting superior:", error);
+    //         }
+    //     }
+    // };
     
     return (
         <div>
@@ -43,18 +43,18 @@ function SuperiorTable({ superiors, setSuperiors, addSuperiorVisibility, setAddS
                     {superiors.length > 0 ? (
                         superiors.map((Superior, index) => (
                             <tr key={index}>
-                                <td>{Superior.SuperiorNumber}</td>
+                                <td>{Superior.superiorNumber}</td>
                                 <td>{Superior.firstName + " " + Superior.middleName + " " + Superior.lastName}</td>
                                 <td>{Superior.contactInformation}</td>
                                 <td>{Superior.HouseNumber + ', ' + Superior.Street + ', ' + Superior.Barangay + ', ' + Superior.City + ', ' + Superior.Province + ', ' + Superior.Country + ', ' + Superior.ZIPcode}</td>
                                 <td>{Superior.designationName}</td>
-                                <td>{Superior.SuperiorType}</td>
+                                <td>{Superior.employeeType}</td>
                                 <td>{Superior.departmentName}</td>
                                 <td>
-                                    <div className='edit-delete-buttons'>
+                                    {/* <div className='edit-delete-buttons'>
                                         <button className='edit-button' onClick={() => setEditSuperiorVisibility({ visibility: true, index: index })}>Edit Details</button>
                                         <button className='delete-button' onClick={() => handleDelete(Superior.superior_ID)}>Remove Superior</button>
-                                    </div>
+                                    </div> */}
                                 </td>
                             </tr>
                         ))
