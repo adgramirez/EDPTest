@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from 'react';
+//view add superior
+
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import EmployeeTable from './components/EmployeeTable';
 import AddEmployee from './components/AddEmployee';
 import EditEmployee from './components/EditEmployee';
 import DeleteEmployee from './components/DeleteEmployee';
+import AddSuperior from './components/Milestone3/AddSuperior';
 
 function App() {
   const [employees, setEmployees] = useState([]);
@@ -13,6 +16,9 @@ function App() {
     index: -1
   });
   const [deleteEmployeeVisibility, setDeleteEmployeeVisibility] = useState(null);
+
+  const [superiors, setSuperiors] = useState([]);
+  const [addSuperiorVisibility, setAddSuperiorVisibility] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -63,6 +69,13 @@ function App() {
             setEmployees={setEmployees}
           />
         )}
+      </div>
+      <div className='default-container'>
+      {addSuperiorVisibility && (<AddSuperior 
+          setAddSuperiorVisibility={setAddSuperiorVisibility}
+          setSuperiors={setSuperiors}
+      />)}
+      
       </div>
     </div>
   );
