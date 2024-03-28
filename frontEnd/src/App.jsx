@@ -8,9 +8,28 @@ import EditEmployee from './components/EditEmployee';
 import DeleteEmployee from './components/DeleteEmployee';
 import SuperiorTable from './components/Milestone3/SuperiorTable';
 import AddSuperior from './components/Milestone3/AddSuperior';
+import EditSuperior from './components/Milestone3/EditSuperior';
 
 function App() {
-  const [employees, setEmployees] = useState([]);
+  const [employees, setEmployees] = useState([
+    {
+      employeeNumber: "123",
+          firstName: "j",
+          middleName: "k",
+          lastName: "l",
+          contactInformation: "0922",
+          HouseNumber: "b10",
+          Street: "aguila",
+          Barangay: "mandug",
+          City: "dv",
+          Province: "dds",
+          Country: "ph",
+          ZIPcode: "800",
+          employeeType: "reg",
+          designationName: "manager",
+          departmentName: "it"
+    }
+  ]);
   const [addEmployeeVisibility, setAddEmployeeVisibility] = useState(false);
   const [editEmployeeVisibility, setEditEmployeeVisibility] = useState({
     visibility: false,
@@ -36,6 +55,10 @@ function App() {
         departmentName: "it"
   }]);
   const [addSuperiorVisibility, setAddSuperiorVisibility] = useState(false);
+  const [editSuperiorVisibility, setEditSuperiorVisibility] = useState({
+    visibility: false,
+    index: -1
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -78,7 +101,6 @@ function App() {
             employees={employees}
           />
         )}
-        {}
         {deleteEmployeeVisibility && (
           <DeleteEmployee
             employeeNumber={deleteEmployeeVisibility}
@@ -94,6 +116,8 @@ function App() {
           setSuperiors={setSuperiors}
           addSuperiorVisibility={addSuperiorVisibility}
           setAddSuperiorVisibility={setAddSuperiorVisibility}
+          editSuperiorVisibility={editSuperiorVisibility}
+          setEditSuperiorVisibility={setEditSuperiorVisibility}
         />
       </div>
       <div className='default-container'>
@@ -101,6 +125,14 @@ function App() {
           setAddSuperiorVisibility={setAddSuperiorVisibility}
           setSuperiors={setSuperiors}
       />)}
+      {editSuperiorVisibility.visibility && (
+          <EditSuperior
+            editSuperiorVisibility={editSuperiorVisibility}
+            setEditSuperiorVisibility={setEditSuperiorVisibility}
+            setSuperiors={setSuperiors}
+            superiors={superiors}
+          />
+        )}
       
       </div>
     </div>

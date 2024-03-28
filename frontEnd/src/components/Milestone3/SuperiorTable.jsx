@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import DefaultButton from '../UI/DefaultButton';
 
-function SuperiorTable({ superiors, setSuperiors, addSuperiorVisibility, setAddSuperiorVisibility, setEditSuperiorVisibility }) {
+function SuperiorTable({ superiors, setSuperiors, addSuperiorVisibility, setAddSuperiorVisibility, editSuperiorVisibility, setEditSuperiorVisibility }) {
     const handleAdd = () => {
         setAddSuperiorVisibility(true);
     };
@@ -51,10 +51,10 @@ function SuperiorTable({ superiors, setSuperiors, addSuperiorVisibility, setAddS
                                 <td>{Superior.employeeType}</td>
                                 <td>{Superior.departmentName}</td>
                                 <td>
-                                    {/* <div className='edit-delete-buttons'>
+                                    <div className='edit-delete-buttons'>
                                         <button className='edit-button' onClick={() => setEditSuperiorVisibility({ visibility: true, index: index })}>Edit Details</button>
-                                        <button className='delete-button' onClick={() => handleDelete(Superior.superior_ID)}>Remove Superior</button>
-                                    </div> */}
+                                        {/* <button className='delete-button' onClick={() => handleDelete(Superior.superior_ID)}>Remove Superior</button> */}
+                                    </div>
                                 </td>
                             </tr>
                         ))
