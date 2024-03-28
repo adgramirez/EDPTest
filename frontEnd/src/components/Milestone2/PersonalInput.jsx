@@ -1,4 +1,4 @@
-import InputBox from "./UI/InputBox";
+import InputBox from "../UI/InputBox";
 
 function PersonalInput({ onPersonalChange }) {
     const handleInputChange = (e, field) => {

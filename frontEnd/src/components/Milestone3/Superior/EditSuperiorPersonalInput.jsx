@@ -1,6 +1,6 @@
 //partially edited
 
-import EditInputBox from "../UI/EditInputBox";
+import EditInputBox from "../../UI/EditInputBox";
 import PropTypes from 'prop-types';
 
 function EditSuperiorPersonalInput({ onPersonalChange, superior }) {

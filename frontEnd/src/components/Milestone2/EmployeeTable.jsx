@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import DefaultButton from './UI/DefaultButton';
+import DefaultButton from '../UI/DefaultButton';
 
 function EmployeeTable({ employees, setEmployees, addEmployeeVisibility, setAddEmployeeVisibility, editEmployeeVisibility, setEditEmployeeVisibility, setDeleteEmployeeVisibility }) {
     const handleAdd = () => {

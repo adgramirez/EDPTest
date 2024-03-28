@@ -2,15 +2,15 @@
 
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import EmployeeTable from './components/EmployeeTable';
-import AddEmployee from './components/AddEmployee';
-import EditEmployee from './components/EditEmployee';
-import DeleteEmployee from './components/DeleteEmployee';
+import EmployeeTable from './components/Milestone2/EmployeeTable';
+import AddEmployee from './components/Milestone2/AddEmployee';
+import EditEmployee from './components/Milestone2/EditEmployee';
+import DeleteEmployee from './components/Milestone2/DeleteEmployee';
 
-import SuperiorTable from './components/Milestone3/SuperiorTable';
-import AddSuperior from './components/Milestone3/AddSuperior';
-import EditSuperior from './components/Milestone3/EditSuperior';
-import DeleteSuperior from './components/Milestone3/DeleteSuperior';
+import SuperiorTable from './components/Milestone3/Superior/SuperiorTable';
+import AddSuperior from './components/Milestone3/Superior/AddSuperior';
+import EditSuperior from './components/Milestone3/Superior/EditSuperior';
+import DeleteSuperior from './components/Milestone3/Superior/DeleteSuperior';
 
 import LeaveTable from './components/Milestone3/Leave/LeaveTable';
 import AddLeave from './components/Milestone3/Leave/AddLeave';

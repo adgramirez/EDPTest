@@ -6,7 +6,7 @@ import axios from 'axios';
 import SuperiorPersonalInput from "./SuperiorPersonalInput";
 import SuperiorAddressInput from './SuperiorAddressInput.jsx';
 import SuperiorWorkInput from './SuperiorWorkInput.jsx';
-import DefaultButton from "../UI/DefaultButton.jsx";
+import DefaultButton from "../../UI/DefaultButton.jsx";
 
 function AddSuperior({ setAddSuperiorVisibility, setSuperiors }) {
     const [personal, setPersonal] = useState({

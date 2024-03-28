@@ -1,4 +1,4 @@
-import InputBox from "./UI/InputBox"
+import InputBox from "../UI/InputBox"
 
 function AddressInput({ onAddressChange }) {
     const handleInputChange = (e, field) => {

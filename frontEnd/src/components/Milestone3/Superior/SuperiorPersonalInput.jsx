@@ -1,6 +1,6 @@
 //partially edited
 
-import InputBox from "../UI/InputBox";
+import InputBox from "../../UI/InputBox";
 import PropTypes from 'prop-types';
 
 function SuperiorPersonalInput({ onPersonalChange }) {

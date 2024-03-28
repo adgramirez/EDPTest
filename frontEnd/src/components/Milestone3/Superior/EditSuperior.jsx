@@ -7,7 +7,7 @@ import axios from 'axios';
 import EditSuperiorPersonalInput from "./EditSuperiorPersonalInput.jsx";
 import EditSuperiorAddressInput from './EditSuperiorAddressInput.jsx';
 import SuperiorWorkInput from './SuperiorWorkInput.jsx';
-import DefaultButton from "../UI/DefaultButton.jsx";
+import DefaultButton from "../../UI/DefaultButton.jsx";
 
 function EditSuperior({ editSuperiorVisibility, setEditSuperiorVisibility, setSuperiors, superiors}) {
     const superior = superiors[editSuperiorVisibility.index];

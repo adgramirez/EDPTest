@@ -2,7 +2,7 @@
 
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import DefaultButton from '../UI/DefaultButton';
+import DefaultButton from '../../UI/DefaultButton';
 
 function SuperiorTable({ superiors, setSuperiors, addSuperiorVisibility, setAddSuperiorVisibility, editSuperiorVisibility, setEditSuperiorVisibility, setDeleteSuperiorVisibility }) {
     const handleAdd = () => {
