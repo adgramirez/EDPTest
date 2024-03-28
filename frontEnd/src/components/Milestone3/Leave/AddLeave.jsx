@@ -122,7 +122,7 @@ function AddLeave({ setLeaves, employee, onEmployeeChange, type, onTypeChange, s
             </div>
             </div>
             <div onClick={handleRequestLeave}>
-                    <DefaultButton label="Add Employee"></DefaultButton>
+                    <DefaultButton label="Request Leave"></DefaultButton>
                 </div>
                 <div onClick={handleCancel}>
                     <DefaultButton label="Cancel"></DefaultButton>

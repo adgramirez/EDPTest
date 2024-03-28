@@ -37,7 +37,7 @@ function LeaveTable({ setRequestLeaveVisibility, setEditLeaveVisibility, setLeav
                         <th className="border-black border border-solid border-collapse">Leave Type</th>
                         <th className="border-black border border-solid border-collapse">Superior</th>
                         <th className="border-black border border-solid border-collapse">Status</th>
-                        <th className="border-black border border-solid border-collapse">Actions</th>
+                        {/* <th className="border-black border border-solid border-collapse">Actions</th> */}
                     </tr>
                 </thead>
                 <tbody>
@@ -52,12 +52,12 @@ function LeaveTable({ setRequestLeaveVisibility, setEditLeaveVisibility, setLeav
                                 <td>{leave.lv.leaveType == 0 ? "vacation" : (leave.lv.leaveType == 1 ? "sick" : (leave.lv.leaveType == 2 ? "maternity" : "paternity"))}</td>
                                 <td>{leave.sup.firstName + " " + leave.sup.middleName + " " + leave.sup.lastName}</td>
                                 <td>{leave.lv.leaveStatus == 0 ? "pending" : (leave.lv.leaveStatus == 1 ? "approved" : "denied")}</td>
-                                <td>
+                                {/* <td>
                                     <div className='edit-delete-buttons'>
                                         <button className='edit-button' onClick={() => setEditLeaveVisibility({ visibility: true, index: index })}>Edit Details</button>
-                                        {/* <button className='delete-button' onClick={() => handleDelete(leave.leave_ID)}>Remove Leave</button> */}
+                                        <button className='delete-button' onClick={() => handleDelete(leave.leave_ID)}>Remove Leave</button>
                                     </div>
-                                </td>
+                                </td> */}
                             </tr>
                         ))
                     ) : (
