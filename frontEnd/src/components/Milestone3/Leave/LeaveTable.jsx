@@ -5,9 +5,9 @@ import axios from 'axios';
 import DefaultButton from '../../UI/DefaultButton';
 
 function LeaveTable({ setRequestLeaveVisibility, setEditLeaveVisibility, setLeaves, leaves, addLeaveVisibility }) {
-    // const handleAdd = () => {
-    //     setRequestLeaveVisibility(true);
-    // };
+    const handleAdd = () => {
+        setRequestLeaveVisibility(true);
+    };
     // const handleDelete = async (leave_ID) => {
     //     if (window.confirm('Are you sure you want to delete this leave?')) {
     //         try {
@@ -31,9 +31,10 @@ function LeaveTable({ setRequestLeaveVisibility, setEditLeaveVisibility, setLeav
                     <tr>
                         <th className="border-black border border-solid border-collapse">Employee No.</th>
                         <th className="border-black border border-solid border-collapse">Name</th>
-                        <th className="border-black border border-solid border-collapse">Designation</th>
-                        <th className="border-black border border-solid border-collapse">Employee Type</th>
                         <th className="border-black border border-solid border-collapse">Department</th>
+                        <th className="border-black border border-solid border-collapse">Start Date</th>
+                        <th className="border-black border border-solid border-collapse">End Date</th>
+                        <th className="border-black border border-solid border-collapse">Leave Type</th>
                         <th className="border-black border border-solid border-collapse">Superior</th>
                         <th className="border-black border border-solid border-collapse">Status</th>
                         <th className="border-black border border-solid border-collapse">Actions</th>
@@ -45,9 +46,10 @@ function LeaveTable({ setRequestLeaveVisibility, setEditLeaveVisibility, setLeav
                             <tr key={index}>
                                 <td>{leave.employee.employeeNumber}</td>
                                 <td>{leave.employee.firstName + " " + leave.employee.middleName + " " + leave.employee.lastName}</td>
-                                <td>{leave.employee.designationName}</td>
-                                <td>{leave.employee.employeeType}</td>
                                 <td>{leave.employee.departmentName}</td>
+                                <td>{leave.leave.startDate}</td>
+                                <td>{leave.leave.endDate}</td>
+                                <td>{leave.leave.leaveType}</td>
                                 <td>{leave.superior.firstName + " " + leave.superior.middleName + " " + leave.superior.lastName}</td>
                                 <td>{leave.leave.status}</td>
                                 {/* <td>
@@ -65,9 +67,9 @@ function LeaveTable({ setRequestLeaveVisibility, setEditLeaveVisibility, setLeav
                     )}
                 </tbody>
             </table>
-            {/* <div className='add-button-container' onClick={handleAdd}>
+            <div className='add-button-container' onClick={handleAdd}>
                 {!addLeaveVisibility && <DefaultButton label="Request Leave"></DefaultButton>}
-            </div> */}
+            </div>
         </div>
     );
 }

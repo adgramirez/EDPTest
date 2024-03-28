@@ -6,11 +6,14 @@ import EmployeeTable from './components/EmployeeTable';
 import AddEmployee from './components/AddEmployee';
 import EditEmployee from './components/EditEmployee';
 import DeleteEmployee from './components/DeleteEmployee';
+
 import SuperiorTable from './components/Milestone3/SuperiorTable';
 import AddSuperior from './components/Milestone3/AddSuperior';
 import EditSuperior from './components/Milestone3/EditSuperior';
 import DeleteSuperior from './components/Milestone3/DeleteSuperior';
+
 import LeaveTable from './components/Milestone3/Leave/LeaveTable';
+import AddLeave from './components/Milestone3/Leave/AddLeave';
 
 function App() {
   const [employees, setEmployees] = useState([
@@ -73,6 +76,14 @@ function App() {
       status: "pending"
     }
   }]);
+
+  //for Leave object
+  const [selectedEmployee, setSelectedEmployee] = useState('');
+  const [selectedType, setSelectedType] = useState('');
+  const [selectedSuperior, setSelectedSuperior] = useState('');
+  const [selectedStatus, setSelectedStatus] = useState('');
+
+  const [addLeaveVisibility, setAddLeaveVisibility] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -157,7 +168,28 @@ function App() {
         )}
       </div>
       <div className='table-button-container'>
-        <LeaveTable leaves={leaves}></LeaveTable>
+        <LeaveTable 
+        leaves={leaves}
+        setRequestLeaveVisibility={setAddLeaveVisibility}
+        />
+      </div>
+      <div className='default-container'>
+        {addLeaveVisibility && (<AddLeave
+            leaves={leaves}
+            setLeaves={setLeaves}
+            employee={selectedEmployee}
+            onEmployeeChange={setSelectedEmployee}
+            type={selectedType}
+            onTypeChange={setSelectedType}
+            superior={selectedSuperior}
+            onSuperiorChange={setSelectedSuperior}
+            status={selectedStatus}
+            onStatusChange={setSelectedStatus}
+            setRequestLeaveVisibility={setAddLeaveVisibility}
+            employees={employees}
+            superiors={superiors}
+          />
+        )}
       </div>
     </div>
   );
