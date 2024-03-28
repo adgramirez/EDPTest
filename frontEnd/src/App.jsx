@@ -10,6 +10,7 @@ import SuperiorTable from './components/Milestone3/SuperiorTable';
 import AddSuperior from './components/Milestone3/AddSuperior';
 import EditSuperior from './components/Milestone3/EditSuperior';
 import DeleteSuperior from './components/Milestone3/DeleteSuperior';
+import LeaveTable from './components/Milestone3/Leave/LeaveTable';
 
 function App() {
   const [employees, setEmployees] = useState([
@@ -40,9 +41,9 @@ function App() {
 
   const [superiors, setSuperiors] = useState([{
     superiorNumber: "123",
-        firstName: "j",
-        middleName: "k",
-        lastName: "l",
+        firstName: "l",
+        middleName: "j",
+        lastName: "k",
         contactInformation: "0922",
         HouseNumber: "b10",
         Street: "aguila",
@@ -61,6 +62,17 @@ function App() {
     index: -1
   });
   const [deleteSuperiorVisibility, setDeleteSuperiorVisibility] = useState(null);
+
+  const [leaves, setLeaves] = useState([{
+    employee: employees[0],
+    superior: superiors[0], 
+    leave: {
+      startDate: "01-31",
+      endDate: "2004",
+      leaveType: "maternal",
+      status: "pending"
+    }
+  }]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -143,6 +155,9 @@ function App() {
             setSuperiors={setSuperiors}
           />
         )}
+      </div>
+      <div className='table-button-container'>
+        <LeaveTable leaves={leaves}></LeaveTable>
       </div>
     </div>
   );

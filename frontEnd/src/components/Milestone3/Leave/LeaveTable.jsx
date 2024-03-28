@@ -2,27 +2,27 @@
 
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import DefaultButton from '../UI/DefaultButton';
+import DefaultButton from '../../UI/DefaultButton';
 
 function LeaveTable({ setRequestLeaveVisibility, setEditLeaveVisibility, setLeaves, leaves, addLeaveVisibility }) {
-    const handleAdd = () => {
-        setRequestLeaveVisibility(true);
-    };
-    const handleDelete = async (leave_ID) => {
-        if (window.confirm('Are you sure you want to delete this leave?')) {
-            try {
-                const response = await axios.delete(`http://localhost:8081/deleteLeave/${leave_ID}`);
-                if (response.status === 200) {
-                    console.log("Leave deleted successfully");
-                    setLeaves(prevLeaves => prevLeaves.filter(lv => lv.leave_ID !== leave_ID));
-                } else {
-                    console.error("Error deleting leave:", response.data);
-                }
-            } catch (error) {
-                console.error("Error deleting leave:", error);
-            }
-        }
-    };
+    // const handleAdd = () => {
+    //     setRequestLeaveVisibility(true);
+    // };
+    // const handleDelete = async (leave_ID) => {
+    //     if (window.confirm('Are you sure you want to delete this leave?')) {
+    //         try {
+    //             const response = await axios.delete(`http://localhost:8081/deleteLeave/${leave_ID}`);
+    //             if (response.status === 200) {
+    //                 console.log("Leave deleted successfully");
+    //                 setLeaves(prevLeaves => prevLeaves.filter(lv => lv.leave_ID !== leave_ID));
+    //             } else {
+    //                 console.error("Error deleting leave:", response.data);
+    //             }
+    //         } catch (error) {
+    //             console.error("Error deleting leave:", error);
+    //         }
+    //     }
+    // };
     
     return (
         <div>
@@ -49,13 +49,13 @@ function LeaveTable({ setRequestLeaveVisibility, setEditLeaveVisibility, setLeav
                                 <td>{leave.employee.employeeType}</td>
                                 <td>{leave.employee.departmentName}</td>
                                 <td>{leave.superior.firstName + " " + leave.superior.middleName + " " + leave.superior.lastName}</td>
-                                <td>{leave.status}</td>
-                                <td>
+                                <td>{leave.leave.status}</td>
+                                {/* <td>
                                     <div className='edit-delete-buttons'>
                                         <button className='edit-button' onClick={() => setEditLeaveVisibility({ visibility: true, index: index })}>Edit Details</button>
                                         <button className='delete-button' onClick={() => handleDelete(leave.leave_ID)}>Remove Leave</button>
                                     </div>
-                                </td>
+                                </td> */}
                             </tr>
                         ))
                     ) : (
@@ -65,9 +65,9 @@ function LeaveTable({ setRequestLeaveVisibility, setEditLeaveVisibility, setLeav
                     )}
                 </tbody>
             </table>
-            <div className='add-button-container' onClick={handleAdd}>
+            {/* <div className='add-button-container' onClick={handleAdd}>
                 {!addLeaveVisibility && <DefaultButton label="Request Leave"></DefaultButton>}
-            </div>
+            </div> */}
         </div>
     );
 }
