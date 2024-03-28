@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import DefaultButton from './UI/DefaultButton';
@@ -95,6 +94,7 @@ EmployeeTable.propTypes = {
     setAddEmployeeVisibility: PropTypes.func.isRequired,
     setDeleteEmployeeVisibility: PropTypes.func.isRequired,
     setEditEmployeeVisibility: PropTypes.func.isRequired,
+    editEmployeeVisibility: PropTypes.bool.isRequired,
 };
 
 export default EmployeeTable;

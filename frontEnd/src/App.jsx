@@ -9,6 +9,7 @@ import DeleteEmployee from './components/DeleteEmployee';
 import SuperiorTable from './components/Milestone3/SuperiorTable';
 import AddSuperior from './components/Milestone3/AddSuperior';
 import EditSuperior from './components/Milestone3/EditSuperior';
+import DeleteSuperior from './components/Milestone3/DeleteSuperior';
 
 function App() {
   const [employees, setEmployees] = useState([
@@ -59,6 +60,7 @@ function App() {
     visibility: false,
     index: -1
   });
+  const [deleteSuperiorVisibility, setDeleteSuperiorVisibility] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -118,13 +120,14 @@ function App() {
           setAddSuperiorVisibility={setAddSuperiorVisibility}
           editSuperiorVisibility={editSuperiorVisibility}
           setEditSuperiorVisibility={setEditSuperiorVisibility}
+          setDeleteSuperiorVisibility={setDeleteSuperiorVisibility} 
         />
       </div>
       <div className='default-container'>
-      {addSuperiorVisibility && (<AddSuperior 
+        {addSuperiorVisibility && (<AddSuperior 
           setAddSuperiorVisibility={setAddSuperiorVisibility}
           setSuperiors={setSuperiors}
-      />)}
+        />)}
       {editSuperiorVisibility.visibility && (
           <EditSuperior
             editSuperiorVisibility={editSuperiorVisibility}
@@ -133,7 +136,13 @@ function App() {
             superiors={superiors}
           />
         )}
-      
+      {deleteSuperiorVisibility && (
+          <DeleteSuperior
+            superiorNumber={deleteSuperiorVisibility}
+            setDeleteSuperiorVisibility={setDeleteSuperiorVisibility}
+            setSuperiors={setSuperiors}
+          />
+        )}
       </div>
     </div>
   );

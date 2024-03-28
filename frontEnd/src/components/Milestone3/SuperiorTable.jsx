@@ -4,25 +4,25 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import DefaultButton from '../UI/DefaultButton';
 
-function SuperiorTable({ superiors, setSuperiors, addSuperiorVisibility, setAddSuperiorVisibility, editSuperiorVisibility, setEditSuperiorVisibility }) {
+function SuperiorTable({ superiors, setSuperiors, addSuperiorVisibility, setAddSuperiorVisibility, editSuperiorVisibility, setEditSuperiorVisibility, setDeleteSuperiorVisibility }) {
     const handleAdd = () => {
         setAddSuperiorVisibility(true);
     };
-    // const handleDelete = async (superior_ID) => {
-    //     if (window.confirm('Are you sure you want to delete this superior?')) {
-    //         try {
-    //             const response = await axios.delete(`http://localhost:8081/deleteSuperior/${superior_ID}`);
-    //             if (response.status === 200) {
-    //                 console.log("Superior deleted successfully");
-    //                 setSuperiors(prevSuperiors => prevSuperiors.filter(emp => emp.superior_ID !== superior_ID));
-    //             } else {
-    //                 console.error("Error deleting superior:", response.data);
-    //             }
-    //         } catch (error) {
-    //             console.error("Error deleting superior:", error);
-    //         }
-    //     }
-    // };
+    const handleDelete = async (superior_ID) => {
+        if (window.confirm('Are you sure you want to delete this superior?')) {
+            try {
+                const response = await axios.delete(`http://localhost:8081/deleteSuperior/${superior_ID}`);
+                if (response.status === 200) {
+                    console.log("Superior deleted successfully");
+                    setSuperiors(prevSuperiors => prevSuperiors.filter(emp => emp.superior_ID !== superior_ID));
+                } else {
+                    console.error("Error deleting superior:", response.data);
+                }
+            } catch (error) {
+                console.error("Error deleting superior:", error);
+            }
+        }
+    };
     
     return (
         <div>
@@ -53,7 +53,7 @@ function SuperiorTable({ superiors, setSuperiors, addSuperiorVisibility, setAddS
                                 <td>
                                     <div className='edit-delete-buttons'>
                                         <button className='edit-button' onClick={() => setEditSuperiorVisibility({ visibility: true, index: index })}>Edit Details</button>
-                                        {/* <button className='delete-button' onClick={() => handleDelete(Superior.superior_ID)}>Remove Superior</button> */}
+                                        <button className='delete-button' onClick={() => handleDelete(Superior.superior_ID)}>Remove Superior</button>
                                     </div>
                                 </td>
                             </tr>
@@ -95,6 +95,7 @@ SuperiorTable.propTypes = {
     addSuperiorVisibility: PropTypes.bool.isRequired,
     setAddSuperiorVisibility: PropTypes.func.isRequired,
     setDeleteSuperiorVisibility: PropTypes.func.isRequired,
+    editSuperiorVisibility: PropTypes.bool.isRequired,
     setEditSuperiorVisibility: PropTypes.func.isRequired,
 };
 
