@@ -51,7 +51,7 @@ function LeaveTable({ setRequestLeaveVisibility, setEditLeaveVisibility, setLeav
                                 <td>{leave.lv.endDate}</td>
                                 <td>{leave.lv.leaveType == 0 ? "vacation" : (leave.lv.leaveType == 1 ? "sick" : (leave.lv.leaveType == 2 ? "maternity" : "paternity"))}</td>
                                 <td>{leave.sup.firstName + " " + leave.sup.middleName + " " + leave.sup.lastName}</td>
-                                <td>{leave.lv.leaveStatus == 0 ? "pending" : "approved"}</td>
+                                <td>{leave.lv.leaveStatus == 0 ? "pending" : (leave.lv.leaveStatus == 1 ? "approved" : "denied")}</td>
                                 <td>
                                     <div className='edit-delete-buttons'>
                                         <button className='edit-button' onClick={() => setEditLeaveVisibility({ visibility: true, index: index })}>Edit Details</button>
