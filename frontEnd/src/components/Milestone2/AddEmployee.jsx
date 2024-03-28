@@ -4,7 +4,7 @@ import axios from 'axios';
 import PersonalInput from "./PersonalInput";
 import AddressInput from './AddressInput.jsx';
 import WorkInput from './WorkInput.jsx';
-import DefaultButton from "./UI/DefaultButton.jsx";
+import DefaultButton from "../UI/DefaultButton.jsx";
 
 function AddEmployee({ setAddEmployeeVisibility, setEmployees }) {
     const [personal, setPersonal] = useState({

@@ -1,6 +1,9 @@
-import InputBox from "./UI/InputBox"
+//partially edited
 
-function AddressInput({ onAddressChange }) {
+import InputBox from "../../UI/InputBox";
+import PropTypes from 'prop-types';
+
+function SuperiorAddressInput({ onAddressChange }) {
     const handleInputChange = (e, field) => {
         const value = e.target.value;
         onAddressChange(prevAddress => ({
@@ -44,4 +47,8 @@ function AddressInput({ onAddressChange }) {
     )
 }
 
-export default AddressInput
+SuperiorAddressInput.propTypes = {
+    onAddressChange: PropTypes.func.isRequired
+};
+
+export default SuperiorAddressInput;

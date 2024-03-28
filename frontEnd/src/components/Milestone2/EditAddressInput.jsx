@@ -1,4 +1,4 @@
-import EditInputBox from "./UI/EditInputBox"
+import EditInputBox from "../UI/EditInputBox"
 
 function EditAddressInput({ onAddressChange, employee }) {
     const handleInputChange = (e, field) => {

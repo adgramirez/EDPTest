@@ -5,7 +5,7 @@ import axios from 'axios';
 import EditPersonalInput from "./EditPersonalInput.jsx";
 import EditAddressInput from './EditAddressInput.jsx';
 import WorkInput from './WorkInput.jsx';
-import DefaultButton from "./UI/DefaultButton.jsx";
+import DefaultButton from "../UI/DefaultButton.jsx";
 
 function EditEmployee({ editEmployeeVisibility, setEditEmployeeVisibility, setEmployees, employees}) {
     const employee = employees[editEmployeeVisibility.index];
