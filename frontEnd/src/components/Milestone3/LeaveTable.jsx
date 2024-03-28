@@ -14,7 +14,7 @@ function LeaveTable({ setRequestLeaveVisibility, setEditLeaveVisibility, setLeav
                 const response = await axios.delete(`http://localhost:8081/deleteLeave/${leave_ID}`);
                 if (response.status === 200) {
                     console.log("Leave deleted successfully");
-                    setLeaves(prevLeaves => prevLeaves.filter(leave => leave.leave_ID !== leave_ID));
+                    setLeaves(prevLeaves => prevLeaves.filter(lv => lv.leave_ID !== leave_ID));
                 } else {
                     console.error("Error deleting leave:", response.data);
                 }
