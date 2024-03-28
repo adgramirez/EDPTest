@@ -1,3 +1,5 @@
+//partially edited
+
 import EditInputBox from "../UI/EditInputBox";
 import PropTypes from 'prop-types';
 
