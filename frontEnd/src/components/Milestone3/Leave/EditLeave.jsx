@@ -6,7 +6,12 @@ import DefaultButton from '../../UI/DefaultButton';
 import { useState } from 'react';
 import axios from 'axios';
 
-function AddLeave({ setLeaves, employee, onEmployeeChange, type, onTypeChange, superior, onSuperiorChange, status, onStatusChange, setRequestLeaveVisibility, employees, superiors }) {
+function EditLeave({ editLeaveVisibility, setEditLeaveVisibility, leaves, setLeaves, employees, superiors }) {
+    const [leave, setLeave] = useState(leaves[editLeaveVisibility.index]);
+
+    const [employee, setEmployee] = useState(employee[leave.lv.employeeIndex])
+    const [superior, setSuperior] = useState(superiors[leave.lv.superiorIndex])
+
     //dropdown
     const handleSelectChange = (e) => {
         const { id, value } = e.target;
@@ -28,8 +33,8 @@ function AddLeave({ setLeaves, employee, onEmployeeChange, type, onTypeChange, s
         }
     };
 
-    const [startDate, setStartDate] = useState("");
-    const [endDate, setEndDate] = useState("");
+    const [startDate, setStartDate] = useState(leave.lv.startDate);
+    const [endDate, setEndDate] = useState(leave.lv.endDate);
 
     const handleStartChange = (e) => {
         setStartDate(e.target.value)
@@ -40,16 +45,15 @@ function AddLeave({ setLeaves, employee, onEmployeeChange, type, onTypeChange, s
     };
 
     const handleCancel = () => {
-        setRequestLeaveVisibility(false);
+        setEditLeaveVisibility(false);
     }
 
-    const handleRequestLeave = async () => {
+    //edit so that it edits, instead of adds
+    const handleEditLeave = async () => {
         const leave = {
             emp: employees[employee],
             sup: superiors[superior],
             lv: {
-                employeeIndex: employee,
-                superiorIndex: superior,
                 startDate: startDate,
                 endDate: endDate,
                 leaveType: type,
@@ -63,7 +67,7 @@ function AddLeave({ setLeaves, employee, onEmployeeChange, type, onTypeChange, s
           const response = await axios.post('http://localhost:8081/addLeave', leave); 
           if (response.status === 201) { 
             setLeaves(prevLeaves => [...prevLeaves, leave]);
-            setRequestLeaveVisibility(false);
+            setEditLeaveVisibility(false);
           } else {
             console.error("Error adding leave:", response.data);
           }
@@ -75,7 +79,7 @@ function AddLeave({ setLeaves, employee, onEmployeeChange, type, onTypeChange, s
     return (
         <div className="add-employee-container">
             <h1>
-                Request Leave
+                Edit Leave
             </h1>
 
             <div className="flex left-align">
@@ -121,8 +125,8 @@ function AddLeave({ setLeaves, employee, onEmployeeChange, type, onTypeChange, s
                 </select>
             </div>
             </div>
-            <div onClick={handleRequestLeave}>
-                    <DefaultButton label="Add Employee"></DefaultButton>
+            <div onClick={handleEditLeave}>
+                    <DefaultButton label="Done"></DefaultButton>
                 </div>
                 <div onClick={handleCancel}>
                     <DefaultButton label="Cancel"></DefaultButton>
@@ -132,19 +136,19 @@ function AddLeave({ setLeaves, employee, onEmployeeChange, type, onTypeChange, s
     );
 }
 
-AddLeave.propTypes = {
+EditLeave.propTypes = {
     setLeaves: PropTypes.func.isRequired,
-    employee: PropTypes.number.isRequired,
+    employee: PropTypes.object.isRequired,
     onEmployeeChange: PropTypes.func.isRequired,
-    type: PropTypes.number.isRequired,
+    type: PropTypes.object.isRequired,
     onTypeChange: PropTypes.func.isRequired,
-    superior: PropTypes.number.isRequired,
+    superior: PropTypes.object.isRequired,
     onSuperiorChange: PropTypes.func.isRequired,
-    status: PropTypes.number.isRequired,
+    status: PropTypes.object.isRequired,
     onStatusChange: PropTypes.func.isRequired,
     setRequestLeaveVisibility: PropTypes.func.isRequired,
     employees: PropTypes.array.isRequired,
     superiors: PropTypes.array.isRequired,
 };
 
-export default AddLeave;
+export default EditLeave;

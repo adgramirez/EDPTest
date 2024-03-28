@@ -44,20 +44,20 @@ function LeaveTable({ setRequestLeaveVisibility, setEditLeaveVisibility, setLeav
                     {leaves.length > 0 ? (
                         leaves.map((leave, index) => (
                             <tr key={index}>
-                                <td>{leave.employee.employeeNumber}</td>
-                                <td>{leave.employee.firstName + " " + leave.employee.middleName + " " + leave.employee.lastName}</td>
-                                <td>{leave.employee.departmentName}</td>
-                                <td>{leave.leave.startDate}</td>
-                                <td>{leave.leave.endDate}</td>
-                                <td>{leave.leave.leaveType}</td>
-                                <td>{leave.superior.firstName + " " + leave.superior.middleName + " " + leave.superior.lastName}</td>
-                                <td>{leave.leave.status}</td>
-                                {/* <td>
+                                <td>{leave.emp.employeeNumber}</td>
+                                <td>{leave.emp.firstName + " " + leave.emp.middleName + " " + leave.emp.lastName}</td>
+                                <td>{leave.emp.departmentName}</td>
+                                <td>{leave.lv.startDate}</td>
+                                <td>{leave.lv.endDate}</td>
+                                <td>{leave.lv.leaveType == 0 ? "vacation" : (leave.lv.leaveType == 1 ? "sick" : (leave.lv.leaveType == 2 ? "maternity" : "paternity"))}</td>
+                                <td>{leave.sup.firstName + " " + leave.sup.middleName + " " + leave.sup.lastName}</td>
+                                <td>{leave.lv.leaveStatus == 0 ? "pending" : "approved"}</td>
+                                <td>
                                     <div className='edit-delete-buttons'>
                                         <button className='edit-button' onClick={() => setEditLeaveVisibility({ visibility: true, index: index })}>Edit Details</button>
-                                        <button className='delete-button' onClick={() => handleDelete(leave.leave_ID)}>Remove Leave</button>
+                                        {/* <button className='delete-button' onClick={() => handleDelete(leave.leave_ID)}>Remove Leave</button> */}
                                     </div>
-                                </td> */}
+                                </td>
                             </tr>
                         ))
                     ) : (
@@ -118,10 +118,12 @@ LeaveTable.propTypes = {
 
             //other details
             leave: PropTypes.shape({
+                employeeIndex: PropTypes.number.isRequired,
+                superiorIndex: PropTypes.number.isRequired,
                 startDate: PropTypes.string.isRequired,
                 endDate: PropTypes.string.isRequired,
-                leaveType: PropTypes.string.isRequired,
-                status: PropTypes.string.isRequired,
+                leaveType: PropTypes.number.isRequired,
+                status: PropTypes.number.isRequired,
             })
         })
     ).isRequired,

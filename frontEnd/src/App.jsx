@@ -14,6 +14,7 @@ import DeleteSuperior from './components/Milestone3/DeleteSuperior';
 
 import LeaveTable from './components/Milestone3/Leave/LeaveTable';
 import AddLeave from './components/Milestone3/Leave/AddLeave';
+import EditLeave from './components/Milestone3/Leave/EditLeave';
 
 function App() {
   const [employees, setEmployees] = useState([
@@ -67,13 +68,15 @@ function App() {
   const [deleteSuperiorVisibility, setDeleteSuperiorVisibility] = useState(null);
 
   const [leaves, setLeaves] = useState([{
-    employee: employees[0],
-    superior: superiors[0], 
-    leave: {
+    emp: employees[0],
+    sup: superiors[0], 
+    lv: {
+      employeeIndex: 0,
+      superiorIndex: 0,
       startDate: "01-31",
       endDate: "2004",
-      leaveType: "maternal",
-      status: "pending"
+      leaveType: 3,
+      leaveStatus: 0
     }
   }]);
 
@@ -84,6 +87,10 @@ function App() {
   const [selectedStatus, setSelectedStatus] = useState('');
 
   const [addLeaveVisibility, setAddLeaveVisibility] = useState(false);
+  const [editLeaveVisibility, setEditLeaveVisibility] = useState({
+    visibility: false,
+    index: -1
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -190,6 +197,14 @@ function App() {
             superiors={superiors}
           />
         )}
+        {/* {editLeaveVisibility.visibility && (<EditLeave
+          editLeaveVisibility={editLeaveVisibility}
+          setEditLeaveVisibility={setEditLeaveVisibility}
+          leaves={leaves}
+          setLeaves={setLeaves}
+          employees={employees}
+          superiors={superiors}
+        />)} */}
       </div>
     </div>
   );
