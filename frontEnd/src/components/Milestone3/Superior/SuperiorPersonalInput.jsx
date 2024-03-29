@@ -1,6 +1,9 @@
-import InputBox from "./UI/InputBox";
+//partially edited
 
-function PersonalInput({ onPersonalChange }) {
+import InputBox from "../../UI/InputBox";
+import PropTypes from 'prop-types';
+
+function SuperiorPersonalInput({ onPersonalChange }) {
     const handleInputChange = (e, field) => {
         const value = e.target.value;
         onPersonalChange(prevPersonal => ({
@@ -13,8 +16,8 @@ function PersonalInput({ onPersonalChange }) {
         <div className="flex left-align">
             <p>1. Personal Details</p>
             <div>
-                <p>(Employee Number)</p>
-                <InputBox label="Ex. 256" onChange={(e) => handleInputChange(e, 'employeeNumber')} />
+                <p>(Superior Number)</p>
+                <InputBox label="Ex. 256" onChange={(e) => handleInputChange(e, 'superiorNumber')} />
             </div>
             <div>
                 <p>(First Name)</p>
@@ -36,4 +39,8 @@ function PersonalInput({ onPersonalChange }) {
     )
 }
 
-export default PersonalInput;
+SuperiorPersonalInput.propTypes = {
+    onPersonalChange: PropTypes.func.isRequired
+};
+
+export default SuperiorPersonalInput;
