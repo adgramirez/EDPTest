@@ -73,10 +73,10 @@ function EmployeeTable({ employees, setEmployees, addEmployeeVisibility, setAddE
 EmployeeTable.propTypes = {
     employees: PropTypes.arrayOf(
         PropTypes.shape({
-            employee_ID: PropTypes.number.isRequired,
+            // employee_ID: PropTypes.number.isRequired,
             employeeNumber: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-            name: PropTypes.string.isRequired,
-            contact: PropTypes.string.isRequired,
+            // name: PropTypes.string.isRequired,
+            contactInformation: PropTypes.string.isRequired,
             HouseNumber: PropTypes.string.isRequired,
             Street: PropTypes.string.isRequired,
             Barangay: PropTypes.string.isRequired,
@@ -84,9 +84,9 @@ EmployeeTable.propTypes = {
             Province: PropTypes.string.isRequired,
             Country: PropTypes.string.isRequired,
             ZIPcode: PropTypes.string.isRequired,
-            designation: PropTypes.string.isRequired,
+            designationName: PropTypes.string.isRequired,
             employeeType: PropTypes.string.isRequired,
-            department: PropTypes.string.isRequired,
+            departmentName: PropTypes.string.isRequired,
         })
     ).isRequired,
     setEmployees: PropTypes.func.isRequired,
@@ -94,7 +94,7 @@ EmployeeTable.propTypes = {
     setAddEmployeeVisibility: PropTypes.func.isRequired,
     setDeleteEmployeeVisibility: PropTypes.func.isRequired,
     setEditEmployeeVisibility: PropTypes.func.isRequired,
-    editEmployeeVisibility: PropTypes.bool.isRequired,
+    // editEmployeeVisibility: PropTypes.bool.isRequired,
 };
 
 export default EmployeeTable;
