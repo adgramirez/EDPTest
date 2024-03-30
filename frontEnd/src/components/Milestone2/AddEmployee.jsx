@@ -6,7 +6,7 @@ import AddressInput from './AddressInput.jsx';
 import WorkInput from './WorkInput.jsx';
 import DefaultButton from "../UI/DefaultButton.jsx";
 
-function AddEmployee({ setAddEmployeeVisibility, setEmployees }) {
+function AddEmployee({ setAddEmployeeVisibility, setEmployees, setSuperiors }) {
     const [personal, setPersonal] = useState({
         employeeNumber: "",
         firstName: "",
@@ -51,6 +51,10 @@ function AddEmployee({ setAddEmployeeVisibility, setEmployees }) {
           const response = await axios.post('http://localhost:8081/addEmployee', employee); 
           if (response.status === 201) { 
             setEmployees(prevEmployees => [...prevEmployees, employee]);
+            //if employee is a manager
+            if (employee.designationName == "Manager") {
+              setSuperiors(prevSuperiors => [...prevSuperiors, employee]);
+            }
             setAddEmployeeVisibility(false);
           } else {
             console.error("Error adding employee:", response.data);
