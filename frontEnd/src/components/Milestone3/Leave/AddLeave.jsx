@@ -6,7 +6,7 @@ import DefaultButton from '../../UI/DefaultButton';
 import { useState } from 'react';
 import axios from 'axios';
 
-function AddLeave({ setLeaves, employee, onEmployeeChange, type, onTypeChange, superior, onSuperiorChange, status, onStatusChange, setRequestLeaveVisibility, employees, superiors }) {
+function AddLeave({ setLeaves, employee, onEmployeeChange, type, onTypeChange, superior, onSuperiorChange, status, onStatusChange, setRequestLeaveVisibility, employees, superiors, leaveTypes, leaveStatuses }) {
     //dropdown
     const handleSelectChange = (e) => {
         const { id, value } = e.target;
@@ -83,7 +83,9 @@ function AddLeave({ setLeaves, employee, onEmployeeChange, type, onTypeChange, s
                 <p>(Employee Name)</p>
                 <select id="employee" onChange={handleSelectChange}>
                     <option value="-1">Choose</option>
-                    <option value="0">First Emp</option>
+                    {employees.map((employee, index) => (
+                        <option key={index} value={index}>{employee.firstName + " " + employee.middleName + " " + employee.lastName}</option>
+                    ))}
                 </select>
             </div>
 
@@ -101,7 +103,9 @@ function AddLeave({ setLeaves, employee, onEmployeeChange, type, onTypeChange, s
                 <p>(Leave Type)</p>
                 <select id="leaveType" onChange={handleSelectChange}>
                     <option value="-1">Choose</option>
-                    <option value="0">First Type</option>
+                    {leaveTypes.map((leaveType, index) => (
+                        <option key={index} value={index}>{leaveType.leaveTypeLabel}</option>
+                    ))}
                 </select>
             </div>
 
@@ -109,7 +113,9 @@ function AddLeave({ setLeaves, employee, onEmployeeChange, type, onTypeChange, s
                 <p>(Superior)</p>
                 <select id="superior" onChange={handleSelectChange}>
                     <option value="-1">Choose</option>
-                    <option value="0">First Sup</option>
+                    {superiors.map((superior, index) => (
+                        <option key={index} value={index}>{superior.firstName + " " + superior.middleName + " " + superior.lastName}</option>
+                    ))}
                 </select>
             </div>
 
@@ -117,7 +123,9 @@ function AddLeave({ setLeaves, employee, onEmployeeChange, type, onTypeChange, s
                 <p>(Status)</p>
                 <select id="status" onChange={handleSelectChange}>
                     <option value="-1">Choose</option>
-                    <option value="0">First Status</option>
+                    {leaveStatuses.map((leaveStatus, index) => (
+                        <option key={index} value={index}>{leaveStatus.leaveStatusLabel}</option>
+                    ))}
                 </select>
             </div>
             </div>
@@ -145,6 +153,8 @@ AddLeave.propTypes = {
     setRequestLeaveVisibility: PropTypes.func.isRequired,
     employees: PropTypes.array.isRequired,
     superiors: PropTypes.array.isRequired,
+    leaveStatuses: PropTypes.array.isRequired,
+    leaveTypes: PropTypes.array.isRequired,
 };
 
 export default AddLeave;
